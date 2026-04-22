@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { CYBERSECURITY_FALLBACK } from '../../lib/fallbacks';
+
+const track = CYBERSECURITY_FALLBACK;
+
+const iconMap: Record<string, string> = {
+  'vapt': 'fa-solid fa-laptop-medical',
+  'grc-maintenance': 'fa-solid fa-tools',
+  'pci-dss': 'fa-regular fa-credit-card',
+  'vciso-dpo': 'fa-solid fa-display',
+  'gdpr-ccpa-dpdpa': 'fa-solid fa-user-secret',
+  'red-team': 'fa-solid fa-users',
+  'soc': 'fa-solid fa-users-gear',
+  'hipaa': 'fa-solid fa-folder-open',
+  'soc2-type2': 'fa-solid fa-money-bill-transfer',
+  'cmmi': 'fa-solid fa-gauge',
+};
+---
+
+<BaseLayout title={`${track.title} Services | Cyberfyx`}>
+  <section style="padding-top: 100px; padding-bottom: 60px;">
+    <div class="container">
+      <div class="grid grid-2" style="align-items: center; gap: 4rem;">
+        <div class="fade-up">
+          <h1 style="margin-bottom: 1.5rem;">{track.hero_title}</h1>
+          <p style="font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8; color: var(--text-secondary);">{track.hero_body}</p>
+        </div>
+        <div class="glass-card fade-up delay-100" style="text-align: center; padding: 4rem;">
+          <i class="fa-solid fa-shield-halved" style="font-size: 6rem; color: var(--accent-secondary);"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2>Our <span class="text-gradient">{track.title} Solutions</span></h2>
+      </div>
+
+      <div class="grid grid-3" style="gap: 2rem;">
+        {track.offerings.map((offering) => (
+          <div class="glass-card fade-up service-card-minimal" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 220px; padding: 2.25rem 1.75rem;">
+            <div class="service-icon" style="margin: 0 auto 1.5rem auto; font-size: 2rem;"><i class={iconMap[offering.slug] || 'fa-solid fa-shield-halved'}></i></div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.18rem;">{offering.title}</h3>
+            <p style="margin: 0; color: var(--text-secondary); font-size: 0.95rem;">{offering.kicker}</p>
+          </div>
+        ))}
+      </div>
+
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="/services" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Back to All Services</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

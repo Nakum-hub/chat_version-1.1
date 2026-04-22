@@ -1,0 +1,17 @@
+---
+interface Props {
+  imageHeight?: number;
+  className?: string;
+}
+
+const { imageHeight = 40, className = 'logo' } = Astro.props;
+---
+
+<a href="/" class={className} style="text-decoration: none; display: flex; align-items: center;">
+  <img
+    class="logo-img"
+    src="/logo.png"
+    alt="Cyberfyx Logo"
+    style={`--logo-height: ${imageHeight}px;`}
+  >
+</a>

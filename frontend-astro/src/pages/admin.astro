@@ -1,0 +1,553 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Admin | Cyberfyx" description="Internal inquiry management">
+  <section class="section">
+    <div class="container" style="max-width: 1100px;">
+
+      <!-- Login Panel -->
+      <div id="login-panel">
+        <div class="admin-card" style="max-width: 420px; margin: 4rem auto;">
+          <h1 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Staff Login</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.75rem;">
+            Internal access only. Requires <code>CYBERFYX_ENABLE_INTERNAL_API=true</code>.
+          </p>
+          <form id="login-form">
+            <div class="af-field">
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" required autocomplete="email" />
+            </div>
+            <div class="af-field">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required autocomplete="current-password" />
+            </div>
+            <div id="login-error" class="af-alert af-alert-error" style="display:none;"></div>
+            <button type="submit" id="login-btn" class="af-btn af-btn-primary" style="width:100%; margin-top:0.5rem;">
+              Sign In
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Admin Dashboard -->
+      <div id="admin-panel" style="display:none;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+          <div>
+            <h1 style="font-size: 1.6rem; margin-bottom:0.15rem;">Inquiries</h1>
+            <p id="admin-user-info" style="color:var(--text-muted); font-size:0.85rem;"></p>
+          </div>
+          <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+            <select id="status-filter" class="af-select">
+              <option value="">All statuses</option>
+              <option value="new">New</option>
+              <option value="triaged">Triaged</option>
+              <option value="responded">Responded</option>
+              <option value="closed">Closed</option>
+              <option value="spam">Spam</option>
+            </select>
+            <button id="refresh-btn" class="af-btn af-btn-outline">Refresh</button>
+            <button id="logout-btn" class="af-btn af-btn-ghost">Sign Out</button>
+          </div>
+        </div>
+
+        <div id="inquiry-list-wrap">
+          <div id="inquiry-loading" class="af-loading">Loading inquiries…</div>
+          <div id="inquiry-error" class="af-alert af-alert-error" style="display:none;"></div>
+          <div id="inquiry-table-wrap" style="display:none;">
+            <div class="admin-card" style="padding:0; overflow:hidden;">
+              <table class="af-table" id="inquiry-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Interest</th>
+                    <th>Source</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="inquiry-tbody"></tbody>
+              </table>
+            </div>
+            <div id="pagination" style="display:flex; gap:0.75rem; align-items:center; justify-content:flex-end; margin-top:1rem; flex-wrap:wrap;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Modal -->
+      <div id="detail-modal" style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px);">
+        <div class="admin-card" id="detail-content" style="position:relative; max-width:600px; margin:5vh auto; max-height:88vh; overflow-y:auto;">
+          <button id="modal-close" style="position:absolute; top:1rem; right:1rem; background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-muted);">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <div id="modal-body"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const TOKEN_KEY = 'cyberfyx_admin_token';
+  const LIMIT = 20;
+
+  let currentOffset = 0;
+  let currentStatus = '';
+  let currentTotal = 0;
+
+  // ── API helpers ─────────────────────────────────────────────────────────────
+
+  function apiBase(): string {
+    const meta = document.querySelector('meta[name="cyberfyx-api-base"]');
+    return meta?.getAttribute('content') ?? '';
+  }
+
+  function storedToken(): string | null {
+    return sessionStorage.getItem(TOKEN_KEY);
+  }
+
+  async function apiFetch(path: string, opts: RequestInit = {}): Promise<Response> {
+    const token = storedToken();
+    return fetch(`${apiBase()}${path}`, {
+      ...opts,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(opts.headers ?? {}),
+      },
+    });
+  }
+
+  // ── Auth ────────────────────────────────────────────────────────────────────
+
+  async function doLogin(email: string, password: string): Promise<void> {
+    const res = await apiFetch('/api/v1/internal/auth/token', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data?.error?.message ?? `Login failed (${res.status})`);
+    }
+    const data = await res.json();
+    sessionStorage.setItem(TOKEN_KEY, data.access_token);
+  }
+
+  async function loadCurrentUser(): Promise<void> {
+    const res = await apiFetch('/api/v1/internal/auth/me');
+    if (!res.ok) return;
+    const user = await res.json();
+    const el = document.getElementById('admin-user-info');
+    if (el) el.textContent = `${user.display_name} · ${user.role.replace('_', ' ')}`;
+  }
+
+  function doLogout(): void {
+    sessionStorage.removeItem(TOKEN_KEY);
+    showPanel('login');
+  }
+
+  // ── Inquiries ───────────────────────────────────────────────────────────────
+
+  function statusBadgeClass(status: string): string {
+    return {
+      new: 'badge-new',
+      triaged: 'badge-triaged',
+      responded: 'badge-responded',
+      closed: 'badge-closed',
+      spam: 'badge-spam',
+    }[status] ?? 'badge-new';
+  }
+
+  function formatDate(iso: string): string {
+    return new Date(iso).toLocaleDateString('en-GB', {
+      day: '2-digit', month: 'short', year: 'numeric',
+    });
+  }
+
+  async function loadInquiries(): Promise<void> {
+    const loading = document.getElementById('inquiry-loading')!;
+    const errEl   = document.getElementById('inquiry-error')!;
+    const tableWrap = document.getElementById('inquiry-table-wrap')!;
+
+    loading.style.display = 'block';
+    errEl.style.display = 'none';
+    tableWrap.style.display = 'none';
+
+    try {
+      const qs = new URLSearchParams({ limit: String(LIMIT), offset: String(currentOffset) });
+      if (currentStatus) qs.set('status', currentStatus);
+
+      const res = await apiFetch(`/api/v1/internal/inquiries?${qs}`);
+      if (res.status === 401) { doLogout(); return; }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const data = await res.json();
+      const items: any[] = Array.isArray(data) ? data : (data.items ?? []);
+      currentTotal = data?.meta?.total ?? items.length;
+
+      renderTable(items);
+      renderPagination();
+      loading.style.display = 'none';
+      tableWrap.style.display = 'block';
+    } catch (err: any) {
+      loading.style.display = 'none';
+      errEl.textContent = `Failed to load inquiries: ${err.message}`;
+      errEl.style.display = 'block';
+    }
+  }
+
+  function renderTable(items: any[]): void {
+    const tbody = document.getElementById('inquiry-tbody')!;
+    if (items.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--text-muted);">No inquiries found.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = items.map(inq => `
+      <tr>
+        <td style="white-space:nowrap;">${formatDate(inq.created_at)}</td>
+        <td>${escHtml(inq.name)}</td>
+        <td style="font-size:0.85rem;">${escHtml(inq.email)}</td>
+        <td style="font-size:0.85rem;">${escHtml(inq.interest_label ?? inq.interest_slug ?? '')}</td>
+        <td style="font-size:0.8rem; color:var(--text-muted);">${escHtml(inq.source_page ?? '')}</td>
+        <td><span class="status-badge ${statusBadgeClass(inq.status)}">${inq.status}</span></td>
+        <td>
+          <button class="af-btn af-btn-ghost af-btn-sm view-btn" data-id="${inq.id}" style="padding:0.25rem 0.6rem;">
+            View
+          </button>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('.view-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = (btn as HTMLElement).dataset.id!;
+        openDetail(id);
+      });
+    });
+  }
+
+  function renderPagination(): void {
+    const el = document.getElementById('pagination')!;
+    const totalPages = Math.ceil(currentTotal / LIMIT);
+    const currentPage = Math.floor(currentOffset / LIMIT) + 1;
+
+    el.innerHTML = `
+      <span style="font-size:0.85rem; color:var(--text-muted);">
+        ${currentTotal} total · Page ${currentPage} of ${totalPages || 1}
+      </span>
+      <button class="af-btn af-btn-outline af-btn-sm" id="prev-btn" ${currentOffset === 0 ? 'disabled' : ''}>
+        &larr; Prev
+      </button>
+      <button class="af-btn af-btn-outline af-btn-sm" id="next-btn" ${currentOffset + LIMIT >= currentTotal ? 'disabled' : ''}>
+        Next &rarr;
+      </button>
+    `;
+    document.getElementById('prev-btn')?.addEventListener('click', () => {
+      currentOffset = Math.max(0, currentOffset - LIMIT);
+      loadInquiries();
+    });
+    document.getElementById('next-btn')?.addEventListener('click', () => {
+      if (currentOffset + LIMIT < currentTotal) {
+        currentOffset += LIMIT;
+        loadInquiries();
+      }
+    });
+  }
+
+  // ── Detail modal ────────────────────────────────────────────────────────────
+
+  async function openDetail(id: string): Promise<void> {
+    const modal = document.getElementById('detail-modal')!;
+    const body  = document.getElementById('modal-body')!;
+    modal.style.display = 'block';
+    body.innerHTML = '<p style="padding:1rem; color:var(--text-muted);">Loading…</p>';
+
+    try {
+      const res = await apiFetch(`/api/v1/internal/inquiries/${id}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const inq = await res.json();
+      renderDetailModal(inq);
+    } catch (err: any) {
+      body.innerHTML = `<p class="af-alert af-alert-error">Failed to load: ${err.message}</p>`;
+    }
+  }
+
+  function renderDetailModal(inq: any): void {
+    const body = document.getElementById('modal-body')!;
+    const utmParts = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term']
+      .filter(k => inq[k])
+      .map(k => `<span class="status-badge badge-triaged">${k.replace('utm_','')}=${escHtml(inq[k])}</span>`)
+      .join(' ');
+
+    body.innerHTML = `
+      <h2 style="font-size:1.25rem; margin-bottom:0.25rem; padding-right:2rem;">${escHtml(inq.name)}</h2>
+      <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.25rem;">${escHtml(inq.email)}${inq.company ? ' · ' + escHtml(inq.company) : ''}</p>
+
+      <div class="detail-grid">
+        <div class="detail-label">Interest</div>
+        <div>${escHtml(inq.interest_label ?? inq.interest_slug ?? '')}</div>
+        <div class="detail-label">Status</div>
+        <div><span class="status-badge ${statusBadgeClass(inq.status)}">${inq.status}</span></div>
+        <div class="detail-label">Source page</div>
+        <div style="font-size:0.85rem;">${escHtml(inq.source_page ?? '-')}</div>
+        <div class="detail-label">Track</div>
+        <div style="font-size:0.85rem;">${escHtml(inq.solution_track_slug ?? '-')}</div>
+        <div class="detail-label">CTA</div>
+        <div style="font-size:0.85rem;">${escHtml(inq.cta_label ?? '-')}</div>
+        <div class="detail-label">Referrer</div>
+        <div style="font-size:0.85rem; word-break:break-all;">${escHtml(inq.referrer_url ?? '-')}</div>
+        ${utmParts ? `<div class="detail-label">UTM</div><div style="display:flex;flex-wrap:wrap;gap:0.3rem;">${utmParts}</div>` : ''}
+        <div class="detail-label">Received</div>
+        <div style="font-size:0.85rem;">${new Date(inq.created_at).toLocaleString()}</div>
+      </div>
+
+      ${inq.message ? `
+        <div style="margin-top:1.25rem;">
+          <p style="font-size:0.75rem; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:0.4rem;">Message</p>
+          <p style="font-size:0.9rem; line-height:1.6; white-space:pre-wrap;">${escHtml(inq.message)}</p>
+        </div>
+      ` : ''}
+
+      <div style="margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--border-glass);">
+        <p style="font-size:0.8rem; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:0.75rem;">Update Status</p>
+        <div style="display:flex; gap:0.65rem; flex-wrap:wrap; align-items:center;">
+          <select id="patch-status" class="af-select" style="flex:1; min-width:140px;">
+            ${['new','triaged','responded','closed','spam'].map(s =>
+              `<option value="${s}" ${s === inq.status ? 'selected' : ''}>${s}</option>`
+            ).join('')}
+          </select>
+          <button id="patch-btn" class="af-btn af-btn-primary" data-id="${inq.id}">
+            Save
+          </button>
+        </div>
+        <div id="patch-msg" style="margin-top:0.5rem; font-size:0.85rem;"></div>
+      </div>
+    `;
+
+    document.getElementById('patch-btn')?.addEventListener('click', async () => {
+      const btn = document.getElementById('patch-btn') as HTMLButtonElement;
+      const sel = document.getElementById('patch-status') as HTMLSelectElement;
+      const msg = document.getElementById('patch-msg')!;
+      btn.disabled = true;
+      btn.textContent = 'Saving…';
+      try {
+        const res = await apiFetch(`/api/v1/internal/inquiries/${inq.id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ status: sel.value }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        msg.textContent = 'Status updated.';
+        msg.style.color = 'var(--accent-soft)';
+        loadInquiries();
+      } catch (err: any) {
+        msg.textContent = `Error: ${err.message}`;
+        msg.style.color = 'var(--accent-tertiary)';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save';
+      }
+    });
+  }
+
+  // ── Utility ─────────────────────────────────────────────────────────────────
+
+  function escHtml(str: string): string {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function showPanel(name: 'login' | 'admin'): void {
+    (document.getElementById('login-panel') as HTMLElement).style.display =
+      name === 'login' ? 'block' : 'none';
+    (document.getElementById('admin-panel') as HTMLElement).style.display =
+      name === 'admin' ? 'block' : 'none';
+  }
+
+  // ── Bootstrap ───────────────────────────────────────────────────────────────
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Login form
+    document.getElementById('login-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn   = document.getElementById('login-btn') as HTMLButtonElement;
+      const errEl = document.getElementById('login-error')!;
+      const email = (document.getElementById('login-email') as HTMLInputElement).value;
+      const pass  = (document.getElementById('login-password') as HTMLInputElement).value;
+      btn.disabled = true;
+      btn.textContent = 'Signing in…';
+      errEl.style.display = 'none';
+      try {
+        await doLogin(email, pass);
+        showPanel('admin');
+        loadCurrentUser();
+        loadInquiries();
+      } catch (err: any) {
+        errEl.textContent = err.message;
+        errEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    });
+
+    // Logout
+    document.getElementById('logout-btn')?.addEventListener('click', doLogout);
+
+    // Refresh
+    document.getElementById('refresh-btn')?.addEventListener('click', () => {
+      currentOffset = 0;
+      loadInquiries();
+    });
+
+    // Status filter
+    document.getElementById('status-filter')?.addEventListener('change', (e) => {
+      currentStatus = (e.target as HTMLSelectElement).value;
+      currentOffset = 0;
+      loadInquiries();
+    });
+
+    // Close modal
+    document.getElementById('modal-close')?.addEventListener('click', () => {
+      (document.getElementById('detail-modal') as HTMLElement).style.display = 'none';
+    });
+    document.getElementById('detail-modal')?.addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) {
+        (e.currentTarget as HTMLElement).style.display = 'none';
+      }
+    });
+
+    // Auto-login if token in session
+    if (storedToken()) {
+      showPanel('admin');
+      loadCurrentUser();
+      loadInquiries();
+    }
+  });
+</script>
+
+<style>
+  .admin-card {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: 1rem;
+    padding: 2rem;
+    backdrop-filter: blur(16px);
+  }
+
+  /* Form fields */
+  .af-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+  .af-field label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+  .af-field input, .af-select {
+    padding: 0.65rem 0.85rem;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-glass);
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .af-field input:focus, .af-select:focus {
+    border-color: var(--logo-text-primary);
+  }
+
+  /* Buttons */
+  .af-btn {
+    padding: 0.6rem 1.1rem;
+    border-radius: 0.5rem;
+    font-family: var(--font-main);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s, opacity 0.2s;
+    white-space: nowrap;
+  }
+  .af-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  .af-btn-primary  { background: var(--logo-text-primary); color: #fff; }
+  .af-btn-primary:hover:not(:disabled) { background: var(--logo-text-accent); }
+  .af-btn-outline  { background: transparent; border: 1px solid var(--border-glass); color: var(--text-primary); }
+  .af-btn-outline:hover:not(:disabled) { background: var(--bg-glass); }
+  .af-btn-ghost    { background: transparent; color: var(--text-muted); }
+  .af-btn-ghost:hover:not(:disabled)   { color: var(--text-primary); }
+  .af-btn-sm       { padding: 0.35rem 0.75rem; font-size: 0.8rem; }
+
+  /* Alerts */
+  .af-alert { padding: 0.7rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; }
+  .af-alert-error { background: rgba(255,107,53,0.1); color: var(--accent-tertiary); border: 1px solid rgba(255,107,53,0.2); }
+
+  /* Loading */
+  .af-loading { color: var(--text-muted); padding: 2rem 0; text-align: center; font-size: 0.9rem; }
+
+  /* Table */
+  .af-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  .af-table th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-glass);
+  }
+  .af-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-glass);
+    color: var(--text-primary);
+    vertical-align: middle;
+  }
+  .af-table tbody tr:last-child td { border-bottom: none; }
+  .af-table tbody tr:hover td { background: rgba(53,29,117,0.04); }
+  [data-theme="dark"] .af-table tbody tr:hover td { background: rgba(231,135,49,0.04); }
+
+  /* Status badges */
+  .status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .badge-new       { background: rgba(53,106,168,0.12); color: #356aa8; }
+  .badge-triaged   { background: rgba(231,135,49,0.12); color: var(--accent-primary); }
+  .badge-responded { background: rgba(98,151,132,0.12); color: var(--accent-soft); }
+  .badge-closed    { background: rgba(120,120,120,0.1); color: var(--text-muted); }
+  .badge-spam      { background: rgba(255,107,53,0.12); color: var(--accent-tertiary); }
+
+  /* Detail modal grid */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  .detail-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    padding-top: 0.1rem;
+  }
+</style>

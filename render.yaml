@@ -1,0 +1,86 @@
+# Render Blueprint — Cyberfyx Backend
+# Deploy: https://dashboard.render.com/select-repo → "Use existing render.yaml"
+#
+# Before deploying, set these env vars manually in the Render dashboard
+# (marked sync: false below):
+#   - CYBERFYX_DATABASE_URL      ← Neon connection string
+#   - CYBERFYX_CORS_ORIGINS      ← your frontend URL(s)
+#   - CYBERFYX_BOOTSTRAP_STAFF_EMAIL
+#   - CYBERFYX_BOOTSTRAP_STAFF_PASSWORD
+#   - CYBERFYX_SMTP_*            ← if you want email notifications
+
+services:
+  - type: web
+    name: cyberfyx-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /health/live
+    envVars:
+      - key: CYBERFYX_ENVIRONMENT
+        value: production
+
+      # Set this in the Render dashboard — paste your Neon connection string:
+      # postgresql+psycopg2://user:password@host.neon.tech/dbname?sslmode=require
+      - key: CYBERFYX_DATABASE_URL
+        sync: false
+
+      # Auto-generated secure random secret (no action needed)
+      - key: CYBERFYX_JWT_SECRET_KEY
+        generateValue: true
+
+      - key: CYBERFYX_JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+
+      - key: CYBERFYX_ENABLE_INTERNAL_API
+        value: "true"
+
+      # Set to your frontend Render URL or custom domain (comma-separated)
+      - key: CYBERFYX_CORS_ORIGINS
+        sync: false
+
+      # Admin account created on first startup — set these before first deploy
+      - key: CYBERFYX_BOOTSTRAP_STAFF_EMAIL
+        sync: false
+
+      - key: CYBERFYX_BOOTSTRAP_STAFF_PASSWORD
+        sync: false
+
+      - key: CYBERFYX_INQUIRY_RATE_LIMIT_WINDOW_MINUTES
+        value: "15"
+
+      - key: CYBERFYX_INQUIRY_RATE_LIMIT_COUNT
+        value: "5"
+
+      - key: CYBERFYX_INQUIRY_DUPLICATE_WINDOW_HOURS
+        value: "24"
+
+      # SMTP — optional, leave blank to disable email notifications
+      - key: CYBERFYX_SMTP_HOST
+        sync: false
+
+      - key: CYBERFYX_SMTP_PORT
+        value: "587"
+
+      - key: CYBERFYX_SMTP_USERNAME
+        sync: false
+
+      - key: CYBERFYX_SMTP_PASSWORD
+        sync: false
+
+      - key: CYBERFYX_SMTP_USE_TLS
+        value: "true"
+
+      - key: CYBERFYX_SMTP_FROM_EMAIL
+        sync: false
+
+      - key: CYBERFYX_SMTP_SALES_TO
+        value: sales@cyberfyx.net
+
+      # Migrations + seed run automatically on every deploy (seed is idempotent)
+      - key: CYBERFYX_RUN_MIGRATIONS_ON_START
+        value: "true"
+
+      - key: CYBERFYX_RUN_SEED_ON_START
+        value: "true"

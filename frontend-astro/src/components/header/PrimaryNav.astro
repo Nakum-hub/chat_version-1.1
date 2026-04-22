@@ -1,0 +1,39 @@
+---
+import { PRIMARY_NAV_ITEMS } from '../../data/navigation';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const isActive = (path: string) => {
+  if (path === '' && currentPath === '') return 'active';
+  if (path !== '' && currentPath.startsWith(path)) return 'active';
+  return '';
+};
+---
+
+<nav id="nav-menu" class="nav-menu" aria-label="Primary navigation">
+  <button id="mobile-menu-close" class="mobile-menu-close" type="button" aria-label="Close menu">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+
+  {PRIMARY_NAV_ITEMS.map((item) => (
+    item.children ? (
+      <div class="nav-item has-dropdown">
+        <a href={item.href} class={`nav-link ${isActive(item.matchPath)}`}>
+          {item.label}
+          <i class="fa-solid fa-chevron-down" style="font-size: 0.7em; margin-left: 3px; transition: transform 0.2s;"></i>
+        </a>
+        <div class="dropdown-menu">
+          {item.children.map((child) => (
+            <a href={child.href} class="dropdown-item">{child.label}</a>
+          ))}
+        </div>
+      </div>
+    ) : (
+      <a href={item.href} class={`nav-link ${isActive(item.matchPath)}`}>{item.label}</a>
+    )
+  ))}
+</nav>

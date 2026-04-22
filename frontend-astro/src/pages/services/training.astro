@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { TRAINING_FALLBACK } from '../../lib/fallbacks';
+
+const track = TRAINING_FALLBACK;
+---
+
+<BaseLayout title={`${track.title} | Cyberfyx`}>
+  <section style="padding-top: 100px; padding-bottom: 60px;">
+    <div class="container">
+      <div class="grid grid-2" style="align-items: center; gap: 4rem;">
+        <div class="fade-up">
+          <h1 style="margin-bottom: 1.5rem;">{track.hero_title}</h1>
+          <p style="font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8; color: var(--text-secondary);">{track.hero_body}</p>
+        </div>
+        <div class="glass-card fade-up delay-100" style="text-align: center; padding: 4rem;">
+          <i class="fa-solid fa-chalkboard-user" style="font-size: 6rem; color: var(--accent-secondary);"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2>Our <span class="text-gradient">Training Programs</span></h2>
+      </div>
+
+      <div class="grid grid-2" style="gap: 2rem; margin-bottom: 4rem;">
+        {track.offerings.map((offering, idx) => (
+          <div class="glass-card fade-up" style={`padding: 2.5rem; border-left: 4px solid ${idx % 2 === 0 ? 'var(--accent-primary)' : 'var(--accent-secondary)'}; display: flex; flex-direction: column; justify-content: space-between;`}>
+            <div>
+              <h3 style="margin-bottom: 0.7rem; font-size: 1.25rem;">{offering.title}</h3>
+              <p style="color: var(--text-secondary); margin: 0; font-size: 0.95rem;">{offering.kicker}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="/services" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Back to All Services</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

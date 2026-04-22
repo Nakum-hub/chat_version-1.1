@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/contact/ContactForm.astro';
+import { CONTACT_PROFILE_FALLBACK } from '../lib/fallbacks';
+
+const profile = CONTACT_PROFILE_FALLBACK;
+const telHref = `tel:${profile.primary_phone.replace(/[^+\d]/g, '')}`;
+---
+
+<BaseLayout 
+  title="Contact Cyberfyx | Start a Security Conversation"
+  description="Whether you need an immediate cybersecurity assessment, managed endpoint services, or ISO consultation, our team is ready to assist you."
+>
+  <section id="contact" class="section pt-4">
+    <div class="container">
+      <div class="grid grid-2 gap-3 contact-split" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+        <div class="fade-up">
+            <h1 class="mb-2">Get in <span class="text-gradient">Touch</span></h1>
+            <p class="lede mb-3">Whether you need an immediate cybersecurity assessment, managed endpoint services, or ISO consultation, our team is ready to assist you.</p>
+
+            <a href={profile.map_url} target="_blank" rel="noopener noreferrer" class="contact-info-item" style="text-decoration: none;">
+                <div class="contact-info-icon">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </div>
+                <div class="contact-info-content">
+                    <h4>Office Location</h4>
+                    <p>
+                      {profile.headquarters_address}
+                    </p>
+                </div>
+            </a>
+
+            <div class="contact-info-item">
+                <div class="contact-info-icon">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <div class="contact-info-content">
+                    <h4>Phone Number</h4>
+                    <p><a href={telHref}>{profile.primary_phone}</a></p>
+                </div>
+            </div>
+
+            <div class="contact-info-item">
+                <div class="contact-info-icon">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div class="contact-info-content">
+                    <h4>Email Address</h4>
+                    <p><a href={`mailto:${profile.sales_email}`}>{profile.sales_email}</a></p>
+                </div>
+            </div>
+        </div>
+
+        <ContactForm interestOptions={profile.interest_options} />
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>

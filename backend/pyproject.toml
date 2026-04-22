@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cyberfyx-backend-test"
+version = "0.1.0"
+description = "Production-grade backend foundation for the Cyberfyx website"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "alembic==1.13.3",
+  "email-validator==2.2.0",
+  "fastapi==0.115.5",
+  "passlib[argon2]==1.7.4",
+  "psycopg2-binary==2.9.10",
+  "pydantic-settings==2.6.1",
+  "PyJWT==2.9.0",
+  "python-multipart==0.0.17",
+  "SQLAlchemy==2.0.36",
+  "uvicorn[standard]==0.32.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx==0.27.2",
+  "pytest==8.3.3",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]

@@ -1,0 +1,281 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlassCard from '../components/GlassCard.astro';
+import LogoRow from '../components/LogoRow.astro';
+import {
+  cybersecurityClientLogos,
+  endpointClientLogos,
+} from '../data/client-logos';
+
+void GlassCard;
+
+const endpointLogoRows = [
+  { logos: endpointClientLogos.slice(0, 9), reverse: true, speedSeconds: 38 },
+  { logos: endpointClientLogos.slice(9, 18), reverse: false, speedSeconds: 42 },
+];
+import ContactForm from '../components/contact/ContactForm.astro';
+import { CONTACT_PROFILE_FALLBACK } from '../lib/fallbacks';
+
+const profile = CONTACT_PROFILE_FALLBACK;
+const telHref = `tel:${profile.primary_phone.replace(/[^+\d]/g, '')}`;
+---
+
+<BaseLayout title="Cyberfyx | Next-Generation Cybersecurity & IT Solutions">
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-layout">
+        <div class="hero-content fade-up">
+          <h1>Next-Generation <span class="text-gradient">Cybersecurity</span> & IT Solutions</h1>
+          <p>Empowering organizations with intelligence-led protection, regulatory readiness, and operational resilience for a digital-first world.</p>
+          <div class="hero-actions fade-up delay-100">
+            <a href="/services" class="btn btn-primary hero-btn hero-btn-primary">
+              <span>Explore Services</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="/contact" class="btn hero-btn hero-btn-secondary">
+              <span>Contact an Expert</span>
+              <i class="fa-regular fa-comments"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual fade-up delay-200" aria-hidden="true">
+          <div class="hero-visual-shell">
+            <div class="hero-visual-glow hero-visual-glow-a"></div>
+            <div class="hero-visual-glow hero-visual-glow-b"></div>
+            <div class="hero-grid-frame">
+              <canvas id="hero-grid-canvas" class="hero-grid-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Features -->
+  <section style="padding-top: 0; background: linear-gradient(135deg, rgba(248, 250, 252, 0) 0%, rgba(53, 29, 117, 0.06) 50%, rgba(248, 250, 252, 0) 100%);">
+    <div class="container">
+      <div class="grid grid-3">
+        <div class="glass-card fade-up">
+          <div class="service-icon"><i class="fa-solid fa-bullseye"></i></div>
+          <h3>Purpose-Built Security</h3>
+          <p>Designed for today's dynamic threat landscape with intelligence-driven architectures.</p>
+        </div>
+        <div class="glass-card fade-up delay-100">
+          <div class="service-icon"><i class="fa-solid fa-network-wired"></i></div>
+          <h3>End-to-End Coverage</h3>
+          <p>Protecting infrastructure, data, and users across on-prem, cloud, and hybrid environments.</p>
+        </div>
+        <div class="glass-card fade-up delay-200">
+          <div class="service-icon"><i class="fa-solid fa-bolt"></i></div>
+          <h3>Rapid Response</h3>
+          <p>Real-time threat mitigation, digital forensics, and incident response when every second matters.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" style="background: linear-gradient(135deg, rgba(248, 250, 252, 0) 0%, rgba(231, 135, 49, 0.05) 50%, rgba(248, 250, 252, 0) 100%);">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2>About <span class="text-gradient">Cyberfyx</span></h2>
+        <p>A globally trusted leader in cybersecurity and smart IT management.</p>
+      </div>
+
+      <div class="grid grid-2" style="align-items: center; gap: 4rem; margin-bottom: 4rem;">
+        <div class="fade-up">
+          <h3 style="margin-bottom: 2rem; font-size: 2rem;">Empowering Organizations for a <span class="text-gradient">Digital-First World</span></h3>
+          <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Cyberfyx is focused on empowering organizations with intelligence-led protection, regulatory readiness, and operational resilience. With a holistic approach to cybersecurity and IT governance, we deliver outcome-driven services that span from strategic consulting to real-time protection and compliance.</p>
+          <p style="font-size: 1.1rem;">As an authorized solution partner for leading Endpoint Management and Data Centre Solutions, we bring deep technical expertise and tailored implementations to secure, optimize, and transform enterprise IT infrastructures.</p>
+        </div>
+        <div class="glass-card fade-up delay-100" style="padding: 3rem; text-align: center;">
+          <i class="fa-solid fa-shield-cat" style="font-size: 5rem; color: var(--accent-secondary); margin-bottom: 1.5rem;"></i>
+          <h3 style="margin-bottom: 1rem;">Intelligence-Led Protection</h3>
+          <p>Designed for today's dynamic threat landscape, our architectures ensure you're always one step ahead of adversaries.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="glass-card fade-up">
+          <div class="service-icon"><i class="fa-solid fa-eye"></i></div>
+          <h3>Our Vision</h3>
+          <p>To become a globally trusted leader in cybersecurity and intelligent IT management, enabling organizations to thrive in a connected, digital-first world.</p>
+        </div>
+        <div class="glass-card fade-up delay-100">
+          <div class="service-icon"><i class="fa-solid fa-bullseye"></i></div>
+          <h3>Our Mission</h3>
+          <p>To deliver intelligence-driven cybersecurity and IT solutions that safeguard infrastructure, data, and users while enabling compliance, operational efficiency, and sustainable growth.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Break -->
+  <section class="stats-section" style="background: linear-gradient(135deg, rgba(248, 250, 252, 0) 0%, rgba(231, 135, 49, 0.04) 50%, rgba(248, 250, 252, 0) 100%);">
+    <div class="container">
+      <div class="grid grid-4">
+        <div class="stat-item fade-up">
+          <div class="stat-number">24/7</div>
+          <p>Real-time Monitoring</p>
+        </div>
+        <div class="stat-item fade-up delay-100">
+          <div class="stat-number"><span class="counter" data-target="360">0</span>°</div>
+          <p>Security Coverage</p>
+        </div>
+        <div class="stat-item fade-up delay-200">
+          <div class="stat-number"><span class="counter" data-target="100">0</span>%</div>
+          <p>Compliance Focus</p>
+        </div>
+        <div class="stat-item fade-up delay-300">
+          <div class="stat-number">Auth</div>
+          <p>Solution Partners</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" style="background: linear-gradient(135deg, rgba(248, 250, 252, 0) 0%, rgba(10, 31, 61, 0.05) 50%, rgba(248, 250, 252, 0) 100%);">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2>Our <span class="text-gradient">Core Services</span></h2>
+        <p>We deliver comprehensive, end-to-end outcome-driven solutions that protect your infrastructure and optimize business operations.</p>
+      </div>
+
+      <div class="grid grid-2" style="gap: 3rem;">
+        <a href="/services/cybersecurity/" class="glass-card fade-up service-card" style="display: flex; align-items: center; justify-content: space-between; padding: 2rem; border-radius: 50px; text-decoration: none;">
+          <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <i class="fa-solid fa-shield-virus" style="font-size: 2rem; color: var(--logo-text-primary);"></i>
+            <h3 style="margin: 0; font-size: 1.25rem; color: var(--logo-text-primary);">Cybersecurity</h3>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color: var(--text-secondary);"></i>
+        </a>
+
+        <a href="/services/endpoint-management/" class="glass-card fade-up delay-100 service-card" style="display: flex; align-items: center; justify-content: space-between; padding: 2rem; border-radius: 50px; text-decoration: none;">
+          <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <i class="fa-solid fa-laptop-code" style="font-size: 2rem; color: var(--logo-text-primary);"></i>
+            <h3 style="margin: 0; font-size: 1.25rem; color: var(--logo-text-primary);">Endpoint Management</h3>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color: var(--text-secondary);"></i>
+        </a>
+
+        <a href="/services/it-security/" class="glass-card fade-up delay-200 service-card" style="display: flex; align-items: center; justify-content: space-between; padding: 2rem; border-radius: 50px; text-decoration: none;">
+          <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <i class="fa-solid fa-server" style="font-size: 2rem; color: var(--logo-text-primary);"></i>
+            <h3 style="margin: 0; font-size: 1.25rem; color: var(--logo-text-primary);">IT Security</h3>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color: var(--text-secondary);"></i>
+        </a>
+
+        <a href="/services/core-industry/" class="glass-card fade-up delay-300 service-card" style="display: flex; align-items: center; justify-content: space-between; padding: 2rem; border-radius: 50px; text-decoration: none;">
+          <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <i class="fa-solid fa-industry" style="font-size: 2rem; color: var(--logo-text-primary);"></i>
+            <h3 style="margin: 0; font-size: 1.25rem; color: var(--logo-text-primary);">Core Industry Services</h3>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color: var(--text-secondary);"></i>
+        </a>
+        
+        <a href="/services/training/" class="glass-card fade-up delay-100 service-card" style="display: flex; align-items: center; justify-content: space-between; padding: 2rem; border-radius: 50px; text-decoration: none;">
+          <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <i class="fa-solid fa-chalkboard-user" style="font-size: 2rem; color: var(--logo-text-primary);"></i>
+            <h3 style="margin: 0; font-size: 1.25rem; color: var(--logo-text-primary);">Training</h3>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color: var(--text-secondary);"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Industries Section -->
+  <section id="industries" style="background: linear-gradient(135deg, rgba(248, 250, 252, 0) 0%, rgba(10, 31, 61, 0.06) 50%, rgba(248, 250, 252, 0) 100%);">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2>Industries We <span class="text-gradient">Protect</span></h2>
+        <p>Tailored cybersecurity and IT governance frameworks built for specific sector requirements.</p>
+      </div>
+
+      <div class="grid grid-4" style="gap: 2rem;">
+        <a href="/industries" class="glass-card fade-up industries-cta-card" style="grid-column: 1 / -1; text-decoration: none; border-left: 4px solid var(--accent-primary);">
+          <div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.75rem;">Explore All Supported Industries</h3>
+            <p style="margin: 0; font-size: 1.1rem;">From Healthcare to Manufacturing, we secure mission-critical environments.</p>
+          </div>
+          <div class="btn btn-primary industries-cta-button" style="pointer-events: none;">View Industries</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Logo Cloud -->
+  <section class="logo-cloud-section">
+    <div class="container">
+      <div class="logo-cloud-panel fade-up">
+        <div class="logo-cloud-intro">
+          <h2>Our Clients</h2>
+        </div>
+
+        <div class="logo-cloud-layout">
+          <div class="logo-category fade-up" aria-label="Cybersecurity clients">
+            <p class="logo-category-label">Cybersecurity clients</p>
+            <LogoRow logos={cybersecurityClientLogos} speedSeconds={36} />
+          </div>
+
+          <div class="logo-category fade-up delay-100" aria-label="Endpoint clients">
+            <p class="logo-category-label">Endpoint clients</p>
+            <div class="logo-row-stack">
+              {endpointLogoRows.map((row) => (
+                <LogoRow logos={row.logos} reverse={row.reverse} speedSeconds={row.speedSeconds} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" style="background: linear-gradient(135deg, rgba(248, 250, 252, 0) 0%, rgba(53, 29, 117, 0.05) 50%, rgba(248, 250, 252, 0) 100%);">
+    <div class="container">
+      <div class="grid grid-2 contact-split" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+        <div class="fade-up">
+          <h2 class="mb-2">Get in <span class="text-gradient">Touch</span></h2>
+          <p class="lede mb-3">Whether you need an immediate cybersecurity assessment, managed endpoint services, or ISO consultation, our team is ready to assist you.</p>
+
+          <a href={profile.map_url} target="_blank" rel="noopener noreferrer" class="contact-info-item" style="text-decoration: none;">
+            <div class="contact-info-icon">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <div class="contact-info-content">
+              <h4>Office Location</h4>
+              <p>{profile.headquarters_address}</p>
+            </div>
+          </a>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <i class="fa-solid fa-phone"></i>
+            </div>
+            <div class="contact-info-content">
+              <h4>Phone Number</h4>
+              <p><a href={telHref}>{profile.primary_phone}</a></p>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div class="contact-info-content">
+              <h4>Email Address</h4>
+              <p><a href={`mailto:${profile.sales_email}`}>{profile.sales_email}</a></p>
+            </div>
+          </div>
+        </div>
+
+        <ContactForm interestOptions={profile.interest_options} />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

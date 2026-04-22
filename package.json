@@ -1,0 +1,7 @@
+{
+  "name": "cyberfyx-website",
+  "private": true,
+  "scripts": {
+    "start": "node scripts/start-all.mjs"
+  }
+}

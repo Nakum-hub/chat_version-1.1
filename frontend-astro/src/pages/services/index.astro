@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+
+void PageHero;
+---
+
+<BaseLayout 
+  title="Solutions | Cyberfyx"
+  description="Comprehensive, end-to-end outcome-driven solutions that protect your infrastructure and optimize business operations."
+>
+  <section style="padding-top: 100px;">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2>Our <span class="text-gradient">Core Services</span></h2>
+        <p>We deliver comprehensive, end-to-end outcome-driven solutions that protect your infrastructure and optimize business operations.</p>
+      </div>
+
+      <div class="grid grid-2" style="gap: 3rem;">
+        <a href="/services/cybersecurity" class="glass-card fade-up" style="display: block; text-decoration: none;">
+          <div class="service-icon"><i class="fa-solid fa-shield-virus"></i></div>
+          <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Cybersecurity</h3>
+          <p style="color: var(--text-secondary);">Protect against rapidly evolving digital threats with our comprehensive cybersecurity frameworks:</p>
+          <ul style="list-style-type: none; margin-top: 1rem;">
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Advanced Threat Protection (ATP)</li>
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Data Loss Prevention (DLP)</li>
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Security-as-a-Service (SECaaS)</li>
+          </ul>
+        </a>
+
+        <a href="/services/endpoint-management" class="glass-card fade-up delay-100" style="display: block; text-decoration: none;">
+          <div class="service-icon"><i class="fa-solid fa-laptop-code"></i></div>
+          <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Endpoint Management</h3>
+          <p style="color: var(--text-secondary);">Smart, secure management for devices across your entire enterprise, ensuring compliance and control:</p>
+          <ul style="list-style-type: none; margin-top: 1rem;">
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Unified Endpoint Management (UEM)</li>
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Patch Management System</li>
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Automated Device Provisioning</li>
+          </ul>
+        </a>
+
+        <a href="/services/it-security" class="glass-card fade-up" style="display: block; text-decoration: none;">
+          <div class="service-icon"><i class="fa-solid fa-server"></i></div>
+          <h3 style="margin-bottom: 1rem; color: var(--text-primary);">IT Security</h3>
+          <p style="color: var(--text-secondary);">Modernize your infrastructure safely with robust IT security standards and access controls:</p>
+          <ul style="list-style-type: none; margin-top: 1rem;">
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Identity & Access Management (IAM)</li>
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Cloud Infrastructure Security</li>
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Zero-Trust Architecture</li>
+          </ul>
+        </a>
+
+        <a href="/services/core-industry" class="glass-card fade-up delay-100" style="display: block; text-decoration: none;">
+          <div class="service-icon"><i class="fa-solid fa-industry"></i></div>
+          <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Core Industry Services</h3>
+          <p style="color: var(--text-secondary);">Specialized cybersecurity frameworks built for manufacturing, supply chain and industrial control requirements:</p>
+          <ul style="list-style-type: none; margin-top: 1rem;">
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>OT/ICS Security Assessments</li>
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Supply Chain Risk Management</li>
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Industrial IoT (IIoT) Security</li>
+          </ul>
+        </a>
+        
+        <a href="/services/training" class="glass-card fade-up" style="display: block; text-decoration: none;">
+          <div class="service-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Training</h3>
+          <p style="color: var(--text-secondary);">Empower your workforce with the knowledge and skills needed to recognize and prevent cyber attacks:</p>
+          <ul style="list-style-type: none; margin-top: 1rem;">
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Phishing Simulation Campaigns</li>
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Security Awareness Basics</li>
+            <li style="margin-bottom: 0.5rem; color: var(--text-secondary);"><i class="fa-solid fa-check text-gradient" style="margin-right: 10px;"></i>Secure Coding Practices for Devs</li>
+          </ul>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

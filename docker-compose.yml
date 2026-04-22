@@ -1,0 +1,36 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+    expose:
+      - "8000"
+    env_file: ./backend/.env
+    volumes:
+      - db_data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8000/health/live || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend-astro
+      args:
+        # Empty = use relative /api/ paths that nginx proxies to backend.
+        # For build-time catalog data, set to the backend's reachable URL:
+        #   PUBLIC_API_BASE: http://backend:8000  (only works if backend is up first)
+        PUBLIC_API_BASE: ""
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  db_data:

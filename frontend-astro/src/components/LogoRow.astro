@@ -1,0 +1,66 @@
+---
+import type { ClientLogo } from '../data/client-logos';
+
+interface Props {
+  logos: ClientLogo[];
+  reverse?: boolean;
+  speedSeconds?: number;
+}
+
+const {
+  logos = [],
+  reverse = false,
+  speedSeconds = 34,
+} = Astro.props;
+---
+
+{
+  logos.length > 0 && (
+    <div class="logo-row">
+      <div
+        class:list={['logo-row-track', reverse && 'is-reverse']}
+        style={`--logo-row-duration: ${speedSeconds}s;`}
+      >
+        {logos.map((logo) => (
+          <div
+            class:list={['logo-row-item', `logo-row-item-${logo.tone ?? 'neutral'}`]}
+            style={[
+              logo.cardWidth ? `--logo-card-basis:${logo.cardWidth}px;` : '',
+              logo.cardHeight ? `--logo-card-height:${logo.cardHeight}px;` : '',
+              logo.cardPadding ? `--logo-card-padding:${logo.cardPadding};` : '',
+              logo.maxHeight ? `--logo-max-height:${logo.maxHeight}px;` : '',
+            ].join('') || undefined}
+          >
+            <img
+              src={logo.src}
+              alt={logo.alt}
+              loading="lazy"
+              decoding="async"
+              style={logo.scale ? `--logo-scale:${logo.scale};` : undefined}
+            />
+          </div>
+        ))}
+        {logos.map((logo) => (
+          <div
+            class:list={['logo-row-item', `logo-row-item-${logo.tone ?? 'neutral'}`, 'is-clone']}
+            aria-hidden="true"
+            style={[
+              logo.cardWidth ? `--logo-card-basis:${logo.cardWidth}px;` : '',
+              logo.cardHeight ? `--logo-card-height:${logo.cardHeight}px;` : '',
+              logo.cardPadding ? `--logo-card-padding:${logo.cardPadding};` : '',
+              logo.maxHeight ? `--logo-max-height:${logo.maxHeight}px;` : '',
+            ].join('') || undefined}
+          >
+            <img
+              src={logo.src}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              style={logo.scale ? `--logo-scale:${logo.scale};` : undefined}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

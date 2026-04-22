@@ -1,0 +1,1884 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberFyx — Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+/* ============================================================
+   DESIGN TOKENS — LIGHT MODE
+   ============================================================ */
+[data-theme="light"] {
+  --bg-base:          #FAF6EF;
+  --bg-surface-1:     #FFFFFF;
+  --bg-subtle:        #F0EDE4;
+
+  --border-default:   #E0D8CC;
+  --border-strong:    #C2B8A8;
+  --border-focus:     #0A1F3D;
+
+  --text-primary:     #050E1E;
+  --text-secondary:   #3A4560;
+  --text-tertiary:    #6B7592;
+  --text-disabled:    #A8AFBF;
+  --text-inverse:     #FAF6EF;
+  --text-on-accent:   #FFFFFF;
+
+  --accent-navy:         #0A1F3D;
+  --accent-navy-hover:   #081830;
+  --accent-navy-press:   #060E24;
+  --accent-navy-subtle:  #EEF1F8;
+
+  --accent-gold:         #E78731;
+  --accent-gold-hover:   #D07321;
+  --accent-gold-subtle:  #FEF4E4;
+
+  --accent-silver:       #8C96A8;
+  --accent-silver-subtle:#EEF0F4;
+
+  --status-success:      #2D7D52;
+  --status-success-bg:   #EAF5EE;
+  --status-warning:      #C8841A;
+  --status-warning-bg:   #FEF5E7;
+  --status-error:        #C0392B;
+  --status-error-bg:     #FDECEA;
+  --status-info:         #0A1F3D;
+  --status-info-bg:      #EEF1F8;
+
+  --sidebar-gradient:    linear-gradient(135deg, #0A1F3D 0%, #163476 100%);
+
+  --shadow-sm:   0 1px 2px rgba(11,22,40,0.06), 0 1px 3px rgba(11,22,40,0.04);
+  --shadow-md:   0 4px 8px rgba(11,22,40,0.08), 0 2px 4px rgba(11,22,40,0.04);
+  --shadow-lg:   0 8px 20px rgba(11,22,40,0.10), 0 4px 8px rgba(11,22,40,0.05);
+  --shadow-xl:   0 16px 40px rgba(11,22,40,0.12), 0 8px 16px rgba(11,22,40,0.06);
+
+  --radius-btn:  10px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  --backdrop: blur(12px) saturate(1.4);
+}
+
+/* ============================================================
+   DESIGN TOKENS — DARK MODE
+   ============================================================ */
+[data-theme="dark"] {
+  --bg-base:          #0A1120;
+  --bg-surface-1:     #0F1828;
+  --bg-subtle:        #151F35;
+
+  --border-default:   #1A2840;
+  --border-strong:    #24386A;
+  --border-focus:     #E78731;
+
+  /* Dark mode: all text same as light */
+  --text-primary:     #EEF1F8;
+  --text-secondary:   #A8B8D0;
+  --text-tertiary:    #6A7E9E;
+  --text-disabled:    #3A4A62;
+  --text-inverse:     #050E1E;
+  --text-on-accent:   #050E1E;
+
+  /* Dark mode buttons: Navy 50 bg, Navy 600 text */
+  --btn-bg:            #EEF1F8;
+  --btn-text:          #0A1F3D;
+  --btn-bg-hover:      #FFFFFF;
+  --btn-bg-press:      #D5DFF0;
+
+  --accent-navy:         #EEF1F8;
+  --accent-navy-hover:   #FFFFFF;
+  --accent-navy-press:   #D5DFF0;
+  --accent-navy-subtle:  #060E24;
+
+  --accent-gold:         #EE8F3A;
+  --accent-gold-hover:   #F59741;
+  --accent-gold-subtle:  #1E1004;
+
+  --accent-silver:       #6A7E9E;
+  --accent-silver-subtle:#111E33;
+
+  --status-success:      #3DA066;
+  --status-success-bg:   #0A1F14;
+  --status-warning:      #D4942A;
+  --status-warning-bg:   #1E1206;
+  --status-error:        #D94F40;
+  --status-error-bg:     #1F0A08;
+  --status-info:         #EEF1F8;
+  --status-info-bg:      #0F1828;
+
+  --sidebar-gradient:    linear-gradient(135deg, #E78731 0%, #EE8F3A 100%);
+
+  --shadow-sm:   0 1px 2px rgba(0,0,0,0.30);
+  --shadow-md:   0 4px 8px rgba(0,0,0,0.35);
+  --shadow-lg:   0 8px 20px rgba(0,0,0,0.40);
+  --shadow-xl:   0 16px 40px rgba(0,0,0,0.50);
+
+  --radius-btn:  10px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  --backdrop: blur(12px) saturate(1.2);
+}
+
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a { text-decoration: none; }
+p { text-decoration: none; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-size: 16px;
+  line-height: 20px;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.ds-shell { display: flex; min-height: 100vh; }
+
+.ds-sidebar {
+  width: 232px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #06111F 0%, #0A1F3D 60%, #071630 100%);
+  border-right: 1px solid rgba(231,135,49,0.12);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 28px 0 80px;
+  z-index: 100;
+}
+.ds-sidebar::-webkit-scrollbar { width: 3px; }
+.ds-sidebar::-webkit-scrollbar-thumb { background: rgba(231,135,49,0.25); border-radius: 3px; }
+
+.ds-main {
+  flex: 1;
+  padding: 56px 64px 80px;
+  max-width: 960px;
+  margin-left: 232px;
+}
+
+/* ============================================================
+   SIDEBAR — CyberFyx dark-navy panel, always dark regardless of theme
+   ============================================================ */
+.sidebar-brand {
+  padding: 0 20px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 16px;
+  position: relative;
+}
+/* orange glow pulse behind brand */
+.sidebar-brand::before {
+  content: '';
+  position: absolute;
+  top: -10px; left: 12px;
+  width: 48px; height: 48px;
+  background: radial-gradient(circle, rgba(231,135,49,0.22) 0%, transparent 70%);
+  pointer-events: none;
+}
+.sidebar-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.sidebar-brand-icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, #E78731 0%, #F59741 100%);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(231,135,49,0.35);
+}
+.sidebar-brand-name {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.sidebar-brand-name .brand-cyber { color: #FFFFFF; }
+.sidebar-brand-name .brand-fyx   { color: #E78731; }
+.sidebar-brand-sub {
+  font-size: 9px;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-left: 42px;
+}
+.sidebar-section-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(231,135,49,0.55);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 18px 20px 5px;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  border: none;
+  border-left: 2px solid transparent;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  border-radius: 0;
+}
+.sidebar-link:hover {
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.05);
+  border-left-color: rgba(231,135,49,0.3);
+}
+.sidebar-link.active {
+  color: #FFFFFF;
+  background: rgba(231,135,49,0.12);
+  border-left-color: #E78731;
+  font-weight: 600;
+}
+/* dark mode: sidebar is always dark-navy, no change needed */
+[data-theme="dark"] .sidebar-link.active {
+  color: #FFFFFF;
+  background: rgba(231,135,49,0.12);
+  border-left-color: #E78731;
+}
+
+.nav-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+}
+.sidebar-link:hover .nav-icon { opacity: 0.75; }
+.sidebar-link.active .nav-icon { opacity: 1; stroke: #E78731; }
+
+.sidebar-footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 14px 20px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: rgba(0,0,0,0.2);
+}
+.sidebar-footer-name {
+  font-size: 10px;
+  color: rgba(231,135,49,0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.sidebar-footer-version {
+  font-size: 9px;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.06em;
+}
+
+/* ============================================================
+   MODE SWITCHER
+   ============================================================ */
+.mode-switcher {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  display: flex;
+  gap: 2px;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  box-shadow: var(--shadow-md);
+  z-index: 1000;
+}
+.mode-btn {
+  padding: 6px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-tertiary);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mode-btn .mode-icon { font-size: 13px; line-height: 1; }
+.mode-btn.active {
+  background: #0A1F3D;
+  color: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(10,31,61,0.25);
+}
+[data-theme="dark"] .mode-btn.active {
+  background: #E78731;
+  color: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(231,135,49,0.35);
+}
+
+/* ============================================================
+   SECTION STRUCTURE — consistent spacing
+   ============================================================ */
+.ds-section {
+  margin-bottom: 80px;
+  scroll-margin-top: 40px;
+}
+.ds-section-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.ds-section-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.ds-section-desc {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  line-height: 1.65;
+  margin-bottom: 32px;
+  max-width: 580px;
+}
+.ds-subsection-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  margin-top: 36px;
+}
+.ds-rule {
+  height: 1px;
+  background: var(--border-default);
+  margin: 48px 0;
+}
+
+/* ============================================================
+   COLOR TOKENS
+   ============================================================ */
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+.token-card {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.token-swatch { height: 52px; width: 100%; }
+.token-info { padding: 10px 12px; }
+.token-name { font-size: 11px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+.token-value { font-size: 10px; color: var(--text-tertiary); }
+
+/* ============================================================
+   TYPOGRAPHY ROWS
+   ============================================================ */
+.type-table { width: 100%; border-collapse: collapse; }
+.type-table tr { border-bottom: 1px solid var(--border-default); }
+.type-table tr:first-child { border-top: 1px solid var(--border-default); }
+.type-table td { padding: 14px 0; vertical-align: middle; }
+.type-preview-cell { width: 55%; }
+.type-meta-cell {
+  width: 15%;
+  text-align: right;
+  padding-right: 12px !important;
+}
+.type-meta-label {
+  display: block;
+  font-size: 9px;
+  color: var(--text-disabled);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+.type-meta-val { font-size: 12px; font-weight: 600; color: var(--text-tertiary); }
+
+/* ============================================================
+   SPACING SECTION
+   ============================================================ */
+.spacing-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-default);
+}
+.spacing-row:first-child { border-top: 1px solid var(--border-default); }
+.spacing-bar-wrap { width: 160px; flex-shrink: 0; }
+.spacing-bar {
+  background: var(--accent-navy);
+  height: 10px;
+  border-radius: 3px;
+  opacity: 0.7;
+}
+[data-theme="dark"] .spacing-bar { background: var(--accent-gold); }
+
+.spacing-size { font-size: 12px; font-weight: 700; color: var(--text-primary); width: 40px; flex-shrink: 0; }
+.spacing-desc { font-size: 12px; color: var(--text-tertiary); }
+
+/* ============================================================
+   BUTTONS — 10px radius, all variants
+   ============================================================ */
+.btn-group { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn-block {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.btn-block-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-disabled);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px; /* All buttons: 10px radius */
+  transition: all 0.18s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+  letter-spacing: 0.01em;
+}
+/* Sizes */
+.btn-xs  { font-size: 11px; padding: 5px 12px; }
+.btn-sm  { font-size: 12px; padding: 7px 16px; }
+.btn-md  { font-size: 14px; padding: 10px 22px; }
+.btn-lg  { font-size: 15px; padding: 13px 28px; }
+.btn-xl  { font-size: 16px; padding: 16px 36px; }
+
+/* Primary — light & reading */
+.btn-primary {
+  background: var(--accent-navy);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover  { background: var(--accent-navy-hover); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.btn-primary:active { background: var(--accent-navy-press); transform: translateY(0); box-shadow: none; }
+.btn-primary:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 3px; }
+
+/* Dark mode: Primary, Ghost → Navy 50 bg, Navy 600 text */
+[data-theme="dark"] .btn-primary,
+[data-theme="dark"] .btn-ghost {
+  background: #EEF1F8;
+  color: #0A1F3D;
+  border-color: transparent;
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="dark"] .btn-primary:hover,
+[data-theme="dark"] .btn-ghost:hover {
+  background: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+[data-theme="dark"] .btn-primary:active,
+[data-theme="dark"] .btn-ghost:active {
+  background: #D5DFF0;
+  transform: translateY(0);
+}
+
+/* Dark mode: Secondary → transparent bg, silver border, light text */
+[data-theme="dark"] .btn-secondary {
+  background: transparent;
+  color: #EEF1F8;
+  border: 1px solid #8C96A8;
+  box-shadow: none;
+}
+[data-theme="dark"] .btn-secondary:hover {
+  background: rgba(238,242,248,0.08);
+  border-color: #A9B7CF;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+[data-theme="dark"] .btn-secondary:active {
+  background: rgba(238,242,248,0.12);
+  transform: translateY(0);
+}
+[data-theme="dark"] .btn-secondary:focus-visible {
+  outline: 2px solid #8C96A8;
+  outline-offset: 3px;
+}
+
+/* Dark mode: Orange stays same as light */
+[data-theme="dark"] .btn-gold {
+  background: var(--accent-gold);
+  color: #FFFFFF;
+  border-color: transparent;
+}
+[data-theme="dark"] .btn-gold:hover {
+  background: var(--accent-gold-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+[data-theme="dark"] .btn-gold:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Dark mode: Destructive stays same as light */
+[data-theme="dark"] .btn-destructive {
+  background: var(--status-error);
+  color: #FFFFFF;
+  border-color: transparent;
+}
+[data-theme="dark"] .btn-destructive:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+[data-theme="dark"] .btn-destructive:active {
+  filter: brightness(0.95);
+  transform: translateY(0);
+}
+
+/* Secondary */
+.btn-secondary {
+  background: var(--bg-surface-1);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-sm);
+}
+.btn-secondary:hover  { background: var(--bg-subtle); border-color: var(--accent-navy); transform: translateY(-1px); }
+.btn-secondary:active { background: var(--bg-subtle); transform: translateY(0); }
+.btn-secondary:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 3px; }
+
+/* Ghost */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+}
+.btn-ghost:hover  { background: var(--bg-subtle); color: var(--text-primary); }
+.btn-ghost:active { background: var(--border-default); }
+.btn-ghost:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 3px; }
+
+/* Orange */
+.btn-gold {
+  background: var(--accent-gold);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+}
+.btn-gold:hover  { background: var(--accent-gold-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-gold:active { transform: translateY(0); box-shadow: none; }
+.btn-gold:focus-visible { outline: 2px solid var(--accent-navy); outline-offset: 3px; }
+
+/* Destructive */
+.btn-destructive {
+  background: var(--status-error);
+  color: #FFFFFF;
+}
+.btn-destructive:hover  { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-destructive:active { filter: brightness(0.95); transform: translateY(0); }
+
+/* Disabled */
+.btn:disabled, .btn.disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Loading */
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+[data-theme="dark"] .btn-primary.btn-loading::after,
+[data-theme="dark"] .btn-ghost.btn-loading::after {
+  border-color: rgba(28,47,84,0.25);
+  border-top-color: #0A1F3D;
+}
+[data-theme="dark"] .btn-secondary.btn-loading::after {
+  border-color: rgba(238,242,248,0.2);
+  border-top-color: #EEF1F8;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   STATE DEMO CLASSES — mode-aware static state representations
+   ============================================================ */
+
+/* Secondary hover demo — light & reading */
+.btn-state-hover {
+  background: var(--bg-subtle) !important;
+  border-color: var(--accent-navy) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md) !important;
+}
+/* Secondary hover demo — dark */
+[data-theme="dark"] .btn-state-hover {
+  background: rgba(238,242,248,0.08) !important;
+  border-color: #A9B7CF !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+/* Secondary pressed demo — light & reading */
+.btn-state-pressed {
+  background: var(--bg-subtle) !important;
+  transform: translateY(0);
+}
+/* Secondary pressed demo — dark */
+[data-theme="dark"] .btn-state-pressed {
+  background: rgba(238,242,248,0.12) !important;
+  border-color: #8C96A8 !important;
+  color: #EEF1F8 !important;
+}
+
+/* Loading spinner — secondary variant uses text-colour spinner */
+.btn-loading-secondary::after {
+  border-color: rgba(28,47,84,0.2);
+  border-top-color: #0A1F3D;
+}
+[data-theme="dark"] .btn-loading-secondary::after {
+  border-color: rgba(238,242,248,0.2) !important;
+  border-top-color: #EEF1F8 !important;
+}
+
+/* ============================================================
+   FIX 6 — Ghost button dark mode: no bg by default, only on hover
+   Text colour stays the same on hover, only bg appears
+   ============================================================ */
+[data-theme="dark"] .btn-ghost {
+  background: transparent !important;
+  color: var(--text-secondary);
+  border-color: transparent;
+  box-shadow: none;
+}
+[data-theme="dark"] .btn-ghost:hover {
+  background: rgba(238,242,248,0.08) !important;
+  color: var(--text-secondary);
+  transform: translateY(-1px);
+  box-shadow: none;
+}
+[data-theme="dark"] .btn-ghost:active {
+  background: rgba(238,242,248,0.12) !important;
+  transform: translateY(0);
+}
+
+/* Badge navy: Navy 600 bg, Navy 50 text */
+.badge-navy { background: #0A1F3D; color: #EEF1F8 !important; border: none; }
+/* Dark mode unchanged */
+[data-theme="dark"] .badge-navy { background: #EEF1F8; color: #0A1F3D !important; border: 1px solid #A9B7CF; }
+
+/* ============================================================
+   FIX 9 — Toggle dark on state: Navy 100 (#A9B7CF) background
+   ============================================================ */
+[data-theme="dark"] .toggle input:checked + .toggle-track { background: #A9B7CF !important; }
+[data-theme="dark"] .toggle input:checked + .toggle-track::after { background: #0A1F3D; }
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+.pill-navy    { background: var(--accent-navy-subtle); color: var(--accent-navy); }
+.pill-gold    { background: var(--accent-gold-subtle); color: var(--accent-gold); }
+.pill-silver  { background: var(--accent-silver-subtle); color: var(--accent-silver); }
+.pill-success { background: var(--status-success-bg); color: var(--status-success); }
+.pill-warning { background: var(--status-warning-bg); color: var(--status-warning); }
+.pill-error   { background: var(--status-error-bg); color: var(--status-error); }
+.pill-outline { background: transparent; border: 1px solid var(--border-strong); color: var(--text-secondary); }
+
+.pill-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.pill-close {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px; border-radius: 50%;
+  font-size: 10px; cursor: pointer; opacity: 0.55;
+  border: none; background: transparent; color: inherit; margin-left: 2px;
+}
+.pill-close:hover { opacity: 1; }
+
+.badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: var(--radius-full);
+  font-size: 10px; font-weight: 700;
+  background: var(--status-error); color: #fff;
+}
+.badge-navy { background: var(--accent-navy); color: #fff; }
+.badge-gold { background: var(--accent-gold); color: #fff; }
+.badge-dot  { width: 8px; height: 8px; min-width: 8px; padding: 0; border-radius: 50%; }
+
+/* ============================================================
+   FORM INPUTS
+   ============================================================ */
+.input-wrap { display: flex; flex-direction: column; gap: 6px; }
+.input-label {
+  font-size: 12px; font-weight: 600;
+  color: var(--text-secondary);
+}
+.input-label .req { color: var(--status-error); margin-left: 2px; }
+
+.input {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px; font-weight: 400; line-height: 20px;
+  color: var(--text-primary);
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+}
+.input::placeholder { color: var(--text-disabled); }
+.input:hover:not(:disabled) { border-color: var(--border-strong); }
+.input:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(28,47,84,0.10); }
+[data-theme="dark"] .input:focus { box-shadow: 0 0 0 3px rgba(200,168,75,0.15); }
+.input:disabled { opacity: 0.45; cursor: not-allowed; background: var(--bg-subtle); }
+.input.input-error { border-color: var(--status-error); }
+.input.input-error:focus { box-shadow: 0 0 0 3px rgba(192,57,43,0.10); }
+.input-hint { font-size: 12px; color: var(--text-tertiary); line-height: 16px; }
+.input-error-msg { font-size: 12px; color: var(--status-error); line-height: 16px; }
+
+.input-group {
+  display: flex; align-items: stretch;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input-group:focus-within { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(28,47,84,0.10); }
+.input-group .input { border: none; box-shadow: none; flex: 1; border-radius: 0; }
+.input-group .input:focus { box-shadow: none; border: none; }
+.input-affix {
+  padding: 0 12px; font-size: 13px; color: var(--text-tertiary);
+  background: var(--bg-subtle); border-right: 1px solid var(--border-default);
+  display: flex; align-items: center; flex-shrink: 0;
+}
+.input-affix-right { border-right: none; border-left: 1px solid var(--border-default); }
+
+.select {
+  font-family: 'Inter', sans-serif; font-size: 16px;
+  color: var(--text-primary); background: var(--bg-surface-1);
+  border: 1px solid var(--border-default); border-radius: var(--radius-md);
+  padding: 10px 36px 10px 14px; outline: none; width: 100%; cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%236B7592' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  transition: border-color 0.15s;
+}
+.select:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(28,47,84,0.10); outline: none; }
+
+.textarea {
+  font-family: 'Inter', sans-serif; font-size: 16px;
+  color: var(--text-primary); background: var(--bg-surface-1);
+  border: 1px solid var(--border-default); border-radius: var(--radius-md);
+  padding: 10px 14px; outline: none; width: 100%;
+  resize: vertical; min-height: 100px; line-height: 1.6;
+  transition: border-color 0.15s;
+}
+.textarea:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(28,47,84,0.10); }
+
+/* Checkbox / Radio */
+.checkbox-wrap, .radio-wrap {
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+}
+.checkbox-wrap input, .radio-wrap input {
+  width: 17px; height: 17px; cursor: pointer;
+  accent-color: var(--accent-navy); flex-shrink: 0;
+}
+.check-label { font-size: 14px; color: var(--text-primary); }
+
+/* Toggle */
+.toggle-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.toggle { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-track {
+  position: absolute; inset: 0;
+  border-radius: var(--radius-full);
+  transition: background 0.2s; cursor: pointer;
+}
+.toggle-track::after {
+  content: ''; position: absolute;
+  left: 3px; top: 3px;
+  width: 18px; height: 18px;
+  background: #fff; border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle input:checked + .toggle-track::after { transform: translateX(18px); }
+
+/* Toggle off states */
+.toggle-track { background: var(--border-strong); }
+
+/* Light: off=border-strong, on=navy */
+.toggle input:checked + .toggle-track { background: var(--accent-navy); }
+
+/* Dark: off=silver (#8C96A8 visible on dark bg), on=Navy 50 (#EEF1F8) */
+[data-theme="dark"] .toggle-track { background: #8C96A8; }
+[data-theme="dark"] .toggle input:checked + .toggle-track { background: #EEF1F8; }
+[data-theme="dark"] .toggle input:checked + .toggle-track::after { background: #0A1F3D; }
+
+
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.tab-list {
+  display: flex;
+  border-bottom: 1px solid var(--border-default);
+}
+.tab-item {
+  padding: 10px 18px;
+  font-size: 14px; font-weight: 600;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  background: none;
+  border-top: none; border-left: none; border-right: none;
+  font-family: 'Inter', sans-serif;
+}
+.tab-item:hover { color: var(--text-primary); }
+.tab-item.active { color: var(--accent-navy); border-bottom-color: var(--accent-navy); }
+[data-theme="dark"] .tab-item.active { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
+.tab-panel { padding: 18px 0; font-size: 14px; color: var(--text-secondary); line-height: 1.6; display: none; }
+.tab-panel.active { display: block; }
+
+/* Pill tabs */
+.tab-list-pill {
+  display: flex; gap: 3px;
+  background: var(--bg-subtle);
+  padding: 4px; border-radius: var(--radius-full);
+  width: fit-content;
+}
+.tab-item-pill {
+  padding: 7px 18px; font-size: 13px; font-weight: 600;
+  color: var(--text-tertiary); cursor: pointer;
+  border-radius: var(--radius-full);
+  transition: all 0.2s;
+  background: none; border: none; font-family: 'Inter', sans-serif;
+}
+.tab-item-pill:hover { color: var(--text-primary); }
+.tab-item-pill.active {
+  background: var(--bg-surface-1);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   ALERTS
+   ============================================================ */
+.alert {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border-left: 3px solid;
+  font-size: 14px; line-height: 1.5;
+}
+.alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.alert-content { flex: 1; }
+.alert-title { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
+.alert-body { font-size: 13px; }
+.alert-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-tertiary); font-size: 14px; padding: 0; flex-shrink: 0;
+  opacity: 0.6;
+}
+.alert-close:hover { opacity: 1; }
+.alert-info    { background: var(--status-info-bg);    border-color: var(--status-info);    color: var(--status-info); }
+.alert-success { background: var(--status-success-bg); border-color: var(--status-success); color: var(--status-success); }
+.alert-warning { background: var(--status-warning-bg); border-color: var(--status-warning); color: var(--status-warning); }
+.alert-error   { background: var(--status-error-bg);   border-color: var(--status-error);   color: var(--status-error); }
+.alert-body-text { color: var(--text-secondary); }
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+.progress-wrap { display: flex; flex-direction: column; gap: 7px; }
+.progress-header { display: flex; justify-content: space-between; align-items: center; }
+.progress-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.progress-val { font-size: 12px; font-weight: 700; color: var(--text-tertiary); }
+.progress-track {
+  height: 6px;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: var(--radius-full);
+  background: var(--accent-navy);
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  position: relative; overflow: hidden;
+}
+.progress-fill::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+.progress-fill.fill-gold    { background: var(--accent-gold); }
+.progress-fill.fill-success { background: var(--status-success); }
+.progress-fill.fill-warning { background: var(--status-warning); }
+.progress-fill.fill-error   { background: var(--status-error); }
+
+/* Spinners */
+.spinner {
+  display: inline-block; border-radius: 50%; border-style: solid;
+  border-color: var(--border-default);
+  border-top-color: var(--accent-navy);
+  animation: spin 0.8s linear infinite;
+}
+[data-theme="dark"] .spinner { border-top-color: var(--accent-gold); }
+.spinner-sm { width: 16px; height: 16px; border-width: 2px; }
+.spinner-md { width: 24px; height: 24px; border-width: 2px; }
+.spinner-lg { width: 36px; height: 36px; border-width: 3px; }
+.spinner-xl { width: 48px; height: 48px; border-width: 3px; }
+
+/* ============================================================
+   TOOLTIP
+   ============================================================ */
+.tooltip-wrap { position: relative; display: inline-flex; }
+.tooltip-box {
+  position: absolute; bottom: calc(100% + 8px); left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-primary); color: var(--text-inverse);
+  font-size: 12px; font-weight: 500;
+  padding: 6px 10px; border-radius: var(--radius-sm);
+  white-space: nowrap; pointer-events: none;
+  opacity: 0; transition: opacity 0.15s; z-index: 100;
+}
+.tooltip-box::after {
+  content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: var(--text-primary);
+}
+.tooltip-wrap:hover .tooltip-box { opacity: 1; }
+
+/* Icon button for tooltip demos:
+   Default = bg-subtle so it's always visible as a button.
+   Hover = adds border + darkens icon for clear contrast. */
+.btn-icon-demo {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px;
+  background: var(--bg-subtle);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.btn-icon-demo:hover {
+  background: var(--bg-subtle);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   CHARTS
+   ============================================================ */
+.chart-wrap {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+}
+.chart-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+.chart-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+.chart-sub { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+.chart-big { font-size: 24px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; line-height: 1; }
+.chart-delta { font-size: 12px; font-weight: 600; color: var(--status-success); margin-top: 4px; }
+.chart-svg { width: 100%; overflow: visible; }
+.axis-label { font-size: 10px; fill: var(--text-disabled); font-family: 'Inter', sans-serif; }
+
+/* Bar chart */
+.bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 90px; }
+.bar-col { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+.bar-fill {
+  width: 100%; border-radius: 4px 4px 0 0;
+  background: var(--accent-navy); opacity: 0.65;
+  transition: opacity 0.15s, background 0.15s; min-height: 4px;
+}
+[data-theme="dark"] .bar-fill { background: var(--accent-gold); }
+.bar-fill:hover { opacity: 1; }
+.bar-fill.bar-active { opacity: 1; background: var(--accent-gold); }
+[data-theme="dark"] .bar-fill.bar-active { background: #FFFFFF; }
+.bar-lbl { font-size: 10px; color: var(--text-tertiary); }
+
+/* Legend dot */
+.legend-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent-navy); flex-shrink: 0;
+}
+.legend-dot.gold { background: var(--accent-gold); }
+
+/* ============================================================
+   SIDEBAR DEMO
+   ============================================================ */
+.sidebar-demo {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  height: 400px;
+  box-shadow: var(--shadow-md);
+}
+.sdb-col1 {
+  width: 188px; flex-shrink: 0;
+  border-right: 1px solid var(--border-default);
+  background: var(--bg-surface-1);
+  padding: 16px 0; overflow-y: auto;
+}
+.sdb-col2 {
+  width: 210px; flex-shrink: 0;
+  border-right: 1px solid var(--border-default);
+  background: var(--bg-base);
+  padding: 16px; overflow-y: auto;
+}
+.sdb-content {
+  flex: 1; padding: 20px; background: var(--bg-base); overflow-y: auto;
+}
+.sdb-nav-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 14px; cursor: pointer;
+  font-size: 13px; font-weight: 500; color: var(--text-tertiary);
+  transition: all 0.15s; border: none; background: none;
+  width: 100%; text-align: left; font-family: 'Inter', sans-serif;
+  border-radius: var(--radius-sm); margin: 0 0 2px;
+}
+.sdb-nav-item:hover { color: var(--text-primary); background: var(--bg-subtle); }
+.sdb-nav-item.active {
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #0A1F3D 0%, #163476 100%);
+  font-weight: 600;
+  margin: 0 6px;
+  width: calc(100% - 12px);
+  padding: 8px 8px;
+}
+[data-theme="dark"] .sdb-nav-item.active {
+  color: #050E1E;
+  background: linear-gradient(135deg, #E78731 0%, #EE8F3A 100%);
+}
+
+.sdb-icon { font-size: 14px; opacity: 0.55; flex-shrink: 0; }
+.sdb-nav-item.active .sdb-icon { opacity: 1; }
+.sdb-nav-item:not(.active):hover .sdb-icon { opacity: 1; }
+.sdb-section-hd {
+  font-size: 10px; font-weight: 700;
+  color: var(--text-disabled); letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 14px 14px 5px;
+}
+.sdb-sub-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px 7px 28px;
+  font-size: 12px; color: var(--text-tertiary);
+  cursor: pointer; transition: all 0.15s;
+  border: none; background: none; width: 100%; text-align: left;
+  font-family: 'Inter', sans-serif;
+}
+.sdb-sub-item:hover { color: var(--text-primary); }
+.sdb-sub-item.active { color: var(--accent-navy); font-weight: 600; }
+[data-theme="dark"] .sdb-sub-item.active { color: var(--accent-gold); }
+.sdb-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: 0.45; flex-shrink: 0; }
+.sdb-sub-item.active .sdb-dot { opacity: 1; }
+
+/* ============================================================
+   SKELETON
+   ============================================================ */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-subtle) 0%, var(--border-default) 50%, var(--bg-subtle) 100%);
+  background-size: 200% 100%;
+  animation: skel-shimmer 1.6s infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes skel-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.skel-line  { height: 13px; margin-bottom: 8px; }
+.skel-title { height: 18px; margin-bottom: 12px; }
+.skel-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; }
+.skel-btn   { height: 36px; width: 90px; border-radius: var(--radius-btn); }
+.skel-block { border-radius: var(--radius-md); }
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.flex   { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.gap-8  { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.items-center { align-items: center; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- MODE SWITCHER -->
+<div class="mode-switcher">
+  <button class="mode-btn active" onclick="setMode('light',this)">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    Light
+  </button>
+  <button class="mode-btn" onclick="setMode('dark',this)">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    Dark
+  </button>
+</div>
+
+<div class="ds-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <nav class="ds-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">
+        <div class="sidebar-brand-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="sidebar-brand-name">
+          <span class="brand-cyber">Cyber</span><span class="brand-fyx">fyx</span>
+        </div>
+      </div>
+      <div class="sidebar-brand-sub">Design System v1.0</div>
+    </div>
+
+    <div class="sidebar-section-label">Foundations</div>
+    <a class="sidebar-link active" onclick="goTo('colors',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+      Colors
+    </a>
+    <a class="sidebar-link" onclick="goTo('typography',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+      Typography
+    </a>
+    <a class="sidebar-link" onclick="goTo('spacing',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Spacing &amp; Grid
+    </a>
+    <a class="sidebar-link" onclick="goTo('elevation',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      Elevation
+    </a>
+
+    <div class="sidebar-section-label">Components</div>
+    <a class="sidebar-link" onclick="goTo('buttons',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="8" width="18" height="8" rx="4"/></svg>
+      Buttons
+    </a>
+    <a class="sidebar-link" onclick="goTo('pills',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="9" width="20" height="6" rx="3"/></svg>
+      Pills &amp; Badges
+    </a>
+    <a class="sidebar-link" onclick="goTo('inputs',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
+      Inputs &amp; Forms
+    </a>
+    <a class="sidebar-link" onclick="goTo('tabs',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="8" y1="4" x2="8" y2="10"/></svg>
+      Tabs
+    </a>
+
+    <div class="sidebar-section-label">Feedback</div>
+    <a class="sidebar-link" onclick="goTo('alerts',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Alerts
+    </a>
+    <a class="sidebar-link" onclick="goTo('progress',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="4"/></svg>
+      Progress &amp; Loading
+    </a>
+    <a class="sidebar-link" onclick="goTo('tooltips',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Tooltips
+    </a>
+
+    <!-- Sidebar footer -->
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-name">Cyberfyx · Design System</div>
+      <div class="sidebar-footer-version">v1.0 · Apr 2026</div>
+    </div>
+
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="ds-main">
+
+    <!-- PAGE HEADER -->
+    <div style="margin-bottom: 64px;">
+      <h1 style="font-size:36px;font-weight:800;letter-spacing:-0.03em;color:var(--text-primary);line-height:1.1;margin-bottom:10px;">CyberFyx Design System</h1>
+      <p style="font-size:15px;color:var(--text-tertiary);max-width:520px;line-height:1.7;margin-bottom:20px;">A refined, minimal design language built for cybersecurity and IT solutions products.</p>
+      <div class="flex gap-8 flex-wrap">
+        <span class="pill pill-silver">v1.0</span>
+        <span class="pill pill-navy">Apr 2026</span>
+        <span class="pill pill-navy">Light + Dark</span>
+      </div>
+    </div>
+
+    <!-- ==================== COLORS ==================== -->
+    <section class="ds-section" id="colors">
+      <div class="ds-section-eyebrow">01 — Foundations</div>
+      <h2 class="ds-section-title">Color System</h2>
+      <p class="ds-section-desc">All colors are defined as CSS custom properties and adapt across light and dark modes. Semantic tokens map the raw palette to purposeful roles.</p>
+
+      <div class="ds-subsection-title">CyberFyx Brand Palette</div>
+      <p style="font-size:12px;color:var(--text-tertiary);margin-top:-6px;margin-bottom:14px;">Full black (#000000) and full white (#FFFFFF) are avoided in favour of near-black and near-white for optical comfort.</p>
+      <div class="token-grid">
+        <div class="token-card"><div class="token-swatch" style="background:#050E1E;"></div><div class="token-info"><div class="token-name">Navy 900</div><div class="token-value">#050E1E</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:#0A1F3D;"></div><div class="token-info"><div class="token-name">Navy 600</div><div class="token-value">#0A1F3D</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:#A9B7CF;"></div><div class="token-info"><div class="token-name">Navy 100</div><div class="token-value">#A9B7CF</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:#EEF1F8;border-bottom:1px solid var(--border-default);"></div><div class="token-info"><div class="token-name">Navy 50</div><div class="token-value">#EEF1F8</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:#E78731;"></div><div class="token-info"><div class="token-name">Orange 500</div><div class="token-value">#E78731</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:#FEF4E4;border-bottom:1px solid var(--border-default);"></div><div class="token-info"><div class="token-name">Orange 50</div><div class="token-value">#FEF4E4</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:#8C96A8;"></div><div class="token-info"><div class="token-name">Silver</div><div class="token-value">#8C96A8</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:#EEF0F4;border-bottom:1px solid var(--border-default);"></div><div class="token-info"><div class="token-name">Silver Light</div><div class="token-value">#EEF0F4</div></div></div>
+      </div>
+
+      <div class="ds-subsection-title">Semantic Tokens</div>
+      <div class="token-grid">
+        <div class="token-card"><div class="token-swatch" style="background:var(--bg-base);border-bottom:1px solid var(--border-default);"></div><div class="token-info"><div class="token-name">bg-base</div><div class="token-value">Page background</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:var(--bg-subtle);border-bottom:1px solid var(--border-default);"></div><div class="token-info"><div class="token-name">bg-subtle</div><div class="token-value">Hover, fills</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:var(--border-default);"></div><div class="token-info"><div class="token-name">border-default</div><div class="token-value">Dividers, lines</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:var(--status-success);"></div><div class="token-info"><div class="token-name">status-success</div><div class="token-value">Positive</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:var(--status-warning);"></div><div class="token-info"><div class="token-name">status-warning</div><div class="token-value">Caution</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:var(--status-error);"></div><div class="token-info"><div class="token-name">status-error</div><div class="token-value">Error</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:var(--text-primary);"></div><div class="token-info"><div class="token-name">text-primary</div><div class="token-value">Main text</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:var(--text-secondary);"></div><div class="token-info"><div class="token-name">text-secondary</div><div class="token-value">Support text</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:var(--text-tertiary);"></div><div class="token-info"><div class="token-name">text-tertiary</div><div class="token-value">Meta, hints</div></div></div>
+        <div class="token-card"><div class="token-swatch" style="background:var(--text-disabled);"></div><div class="token-info"><div class="token-name">text-disabled</div><div class="token-value">Disabled</div></div></div>
+      </div>
+    </section>
+
+    <!-- ==================== TYPOGRAPHY ==================== -->
+    <section class="ds-section" id="typography">
+      <div class="ds-section-eyebrow">01 — Foundations</div>
+      <h2 class="ds-section-title">Typography</h2>
+      <p class="ds-section-desc">All type is set in Inter. The scale is purpose-built for clarity and professional use across cybersecurity products.</p>
+
+      <table class="type-table">
+        <tr>
+          <td class="type-preview-cell"><span style="font-size:48px;font-weight:600;line-height:64px;letter-spacing:-0.02em;color:var(--text-primary);">Heading 1</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">48px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">600</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">64</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:40px;font-weight:600;line-height:48px;letter-spacing:-0.02em;color:var(--text-primary);">Heading 2</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">40px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">600</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">48</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:32px;font-weight:600;line-height:40px;letter-spacing:-0.02em;color:var(--text-primary);">Heading 3</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">32px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">600</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">40</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:24px;font-weight:600;line-height:30px;color:var(--text-primary);">Heading 4</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">24px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">600</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">30</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:20px;font-weight:600;line-height:24px;color:var(--text-primary);">Heading 5</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">20px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">600</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">24</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:16px;font-weight:600;line-height:20px;color:var(--text-primary);">Heading 6</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">16px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">600</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">20</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:16px;font-weight:400;line-height:20px;color:var(--text-primary);">Body 1 — Cyberfyx protects organisations from advanced persistent threats.</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">16px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">400</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">20</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:12px;font-weight:400;line-height:16px;color:var(--text-secondary);">Body 2 — Incident logged on 14 April 2026. Analyst assigned for review.</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">12px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">400</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">16</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:12px;font-weight:400;line-height:16px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.06em;">Label — Detection date</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">12px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">400</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">16</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:12px;font-weight:500;line-height:16px;color:var(--text-primary);">Pill — Active Threat</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">12px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">500</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">16</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:20px;font-weight:600;line-height:24px;color:var(--text-primary);">Navbar Header</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">20px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">600</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">24</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:16px;font-weight:600;line-height:20px;color:var(--text-primary);">Nested within left navbar #1</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">16px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">600</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">20</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:16px;font-weight:400;line-height:20px;color:var(--text-secondary);">Nested within left navbar #2</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">16px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">400</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">20</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:16px;font-weight:400;line-height:20px;color:var(--text-primary);">Input text — Enter incident reference number</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">16px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">400</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">20</span></td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:400;line-height:14px;color:var(--text-tertiary);">Caption — Last updated 2 minutes ago</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Size</span><span class="type-meta-val">11px</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Weight</span><span class="type-meta-val">400</span></td>
+          <td class="type-meta-cell"><span class="type-meta-label">Line-H</span><span class="type-meta-val">14</span></td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- ==================== SPACING ==================== -->
+    <section class="ds-section" id="spacing">
+      <div class="ds-section-eyebrow">01 — Foundations</div>
+      <h2 class="ds-section-title">Spacing & Grid</h2>
+      <p class="ds-section-desc">Base unit is 4px. All spacing values are multiples of the base unit, ensuring consistent rhythm across all components.</p>
+
+      <div class="ds-subsection-title">Spacing Scale</div>
+      <div style="display:flex;flex-direction:column;">
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:4px;"></div></div><div class="spacing-size">4px</div><div class="spacing-desc">Micro gaps, icon nudges</div></div>
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:8px;"></div></div><div class="spacing-size">8px</div><div class="spacing-desc">Icon padding, tight clusters</div></div>
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:12px;"></div></div><div class="spacing-size">12px</div><div class="spacing-desc">Component internal spacing</div></div>
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16px;"></div></div><div class="spacing-size">16px</div><div class="spacing-desc">Default gap between elements</div></div>
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:20px;"></div></div><div class="spacing-size">20px</div><div class="spacing-desc">Section padding (small)</div></div>
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24px;"></div></div><div class="spacing-size">24px</div><div class="spacing-desc">Card internal padding</div></div>
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:32px;"></div></div><div class="spacing-size">32px</div><div class="spacing-desc">Component separation</div></div>
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:40px;"></div></div><div class="spacing-size">40px</div><div class="spacing-desc">Section gap</div></div>
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:48px;"></div></div><div class="spacing-size">48px</div><div class="spacing-desc">Large section spacing</div></div>
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:56px;"></div></div><div class="spacing-size">56px</div><div class="spacing-desc">Page section breaks</div></div>
+        <div class="spacing-row"><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:64px;"></div></div><div class="spacing-size">64px</div><div class="spacing-desc">Hero / page-level spacing</div></div>
+      </div>
+    </section>
+
+    <!-- ==================== ELEVATION ==================== -->
+    <section class="ds-section" id="elevation">
+      <div class="ds-section-eyebrow">01 — Foundations</div>
+      <h2 class="ds-section-title">Elevation</h2>
+      <p class="ds-section-desc">Shadows create depth hierarchy. Higher elevation = more shadow. In dark mode, surfaces lighten rather than darken to show elevation.</p>
+
+      <div class="ds-subsection-title">Shadow Scale</div>
+      <div class="grid-4" style="margin-bottom:36px;">
+        <div style="background:var(--bg-surface-1);border-radius:var(--radius-md);padding:20px;box-shadow:var(--shadow-sm);text-align:center;border:1px solid var(--border-default);"><span style="font-size:12px;font-weight:700;color:var(--text-tertiary);">shadow-sm</span></div>
+        <div style="background:var(--bg-surface-1);border-radius:var(--radius-md);padding:20px;box-shadow:var(--shadow-md);text-align:center;"><span style="font-size:12px;font-weight:700;color:var(--text-tertiary);">shadow-md</span></div>
+        <div style="background:var(--bg-surface-1);border-radius:var(--radius-md);padding:20px;box-shadow:var(--shadow-lg);text-align:center;"><span style="font-size:12px;font-weight:700;color:var(--text-tertiary);">shadow-lg</span></div>
+        <div style="background:var(--bg-surface-1);border-radius:var(--radius-md);padding:20px;box-shadow:var(--shadow-xl);text-align:center;"><span style="font-size:12px;font-weight:700;color:var(--text-tertiary);">shadow-xl</span></div>
+      </div>
+
+      <div class="ds-subsection-title">Border Radius for Cards</div>
+      <div class="grid-3">
+        <div style="background:var(--accent-navy-subtle);border-radius:var(--radius-sm);padding:20px;text-align:center;border:1px solid var(--border-default);"><span style="font-size:11px;font-weight:700;color:var(--text-secondary);">radius-sm<br>6px</span></div>
+        <div style="background:var(--accent-navy-subtle);border-radius:var(--radius-md);padding:20px;text-align:center;border:1px solid var(--border-default);"><span style="font-size:11px;font-weight:700;color:var(--text-secondary);">radius-md<br>10px</span></div>
+        <div style="background:var(--accent-navy-subtle);border-radius:var(--radius-lg);padding:20px;text-align:center;border:1px solid var(--border-default);"><span style="font-size:11px;font-weight:700;color:var(--text-secondary);">radius-lg<br>16px</span></div>
+      </div>
+    </section>
+
+    <!-- ==================== BUTTONS ==================== -->
+    <section class="ds-section" id="buttons">
+      <div class="ds-section-eyebrow">02 — Components</div>
+      <h2 class="ds-section-title">Buttons</h2>
+      <p class="ds-section-desc">All buttons use a fixed <strong>10px border radius</strong>. Hover each button to see the live hover state, and check all five variants across both modes using the mode switcher above.</p>
+
+      <div class="ds-subsection-title">Variants</div>
+      <div class="btn-block">
+        <div class="btn-block-label">All variants — default</div>
+        <div class="btn-group">
+          <button class="btn btn-md btn-primary">Primary</button>
+          <button class="btn btn-md btn-secondary">Secondary</button>
+          <button class="btn btn-md btn-ghost">Ghost</button>
+          <button class="btn btn-md btn-gold">Gold</button>
+          <button class="btn btn-md btn-destructive">Destructive</button>
+        </div>
+      </div>
+
+      <div class="ds-subsection-title">Sizes</div>
+      <div class="btn-block">
+        <div class="btn-block-label">Primary — all sizes</div>
+        <div class="btn-group" style="align-items:center;">
+          <button class="btn btn-xs btn-primary">X-Small</button>
+          <button class="btn btn-sm btn-primary">Small</button>
+          <button class="btn btn-md btn-primary">Medium</button>
+          <button class="btn btn-lg btn-primary">Large</button>
+          <button class="btn btn-xl btn-primary">X-Large</button>
+        </div>
+      </div>
+
+      <div class="ds-subsection-title">States — Primary</div>
+      <div class="btn-block">
+        <div class="btn-block-label">All interaction states</div>
+        <div class="btn-group">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-primary">Primary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Default</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-primary" style="background:var(--accent-navy-hover);transform:translateY(-1px);box-shadow:var(--shadow-md);">Primary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Hover</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-primary" style="background:var(--accent-navy-press);box-shadow:none;">Primary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Pressed</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-primary" style="outline:2px solid var(--accent-gold);outline-offset:3px;">Primary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Focus</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-primary disabled" disabled>Primary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Disabled</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-primary btn-loading">Primary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Loading</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-subsection-title">States — Secondary</div>
+      <div class="btn-block">
+        <div class="btn-block-label">All interaction states — adapts per mode (switch modes above to see)</div>
+        <div class="btn-group">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-secondary">Secondary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Default</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-secondary btn-state-hover">Secondary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Hover</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-secondary btn-state-pressed">Secondary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Pressed</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-secondary" style="outline:2px solid var(--accent-gold);outline-offset:3px;">Secondary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Focus</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-secondary" disabled>Secondary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Disabled</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <button class="btn btn-md btn-secondary btn-loading btn-loading-secondary">Secondary</button>
+            <span style="font-size:10px;color:var(--text-disabled);text-transform:uppercase;letter-spacing:0.08em;">Loading</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PILLS & BADGES ==================== -->
+    <section class="ds-section" id="pills">
+      <div class="ds-section-eyebrow">02 — Components</div>
+      <h2 class="ds-section-title">Pills & Badges</h2>
+      <p class="ds-section-desc">Pills communicate status, categories, and metadata. Badges indicate counts or states on other elements.</p>
+
+      <div class="ds-subsection-title">Pill Variants</div>
+      <div class="flex flex-wrap gap-8" style="margin-top:4px;">
+        <span class="pill pill-navy">Navy</span>
+        <span class="pill pill-gold">Orange</span>
+        <span class="pill pill-silver">Silver</span>
+        <span class="pill pill-success">Resolved</span>
+        <span class="pill pill-warning">In Progress</span>
+        <span class="pill pill-error">Critical</span>
+        <span class="pill pill-outline">Outline</span>
+      </div>
+
+      <div class="ds-subsection-title">With Status Dot</div>
+      <div class="flex flex-wrap gap-8" style="margin-top:4px;">
+        <span class="pill pill-success"><span class="pill-dot"></span>Resolved</span>
+        <span class="pill pill-warning"><span class="pill-dot"></span>In Progress</span>
+        <span class="pill pill-error"><span class="pill-dot"></span>Critical</span>
+        <span class="pill pill-navy"><span class="pill-dot"></span>Assigned</span>
+      </div>
+
+      <div class="ds-subsection-title">With Remove</div>
+      <div class="flex flex-wrap gap-8" style="margin-top:4px;">
+        <span class="pill pill-navy">Threat Intel <button class="pill-close"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></span>
+        <span class="pill pill-gold">Billable Engagement <button class="pill-close"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></span>
+        <span class="pill pill-silver">Archived <button class="pill-close"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></span>
+      </div>
+
+      <div class="ds-subsection-title">Badges</div>
+      <div class="flex flex-wrap gap-16 items-center" style="margin-top:4px;">
+        <span class="badge">3</span>
+        <span class="badge badge-navy">12</span>
+        <span class="badge badge-gold">!</span>
+        <span class="badge badge-dot" style="background:var(--status-success);"></span>
+        <span class="badge badge-dot" style="background:var(--status-warning);"></span>
+        <span class="badge badge-dot" style="background:var(--status-error);"></span>
+        <div class="flex items-center gap-8"><span style="font-size:14px;color:var(--text-primary);">Open Incidents</span><span class="badge">7</span></div>
+      </div>
+    </section>
+
+    <!-- ==================== INPUTS ==================== -->
+    <section class="ds-section" id="inputs">
+      <div class="ds-section-eyebrow">02 — Components</div>
+      <h2 class="ds-section-title">Inputs & Forms</h2>
+      <p class="ds-section-desc">Click each input to see the focus state. All form elements maintain consistent sizing and alignment for forms and interactive flows.</p>
+
+      <div class="grid-2" style="gap:20px;">
+        <div class="input-wrap">
+          <label class="input-label">Case Reference <span class="req">*</span></label>
+          <input class="input" type="text" placeholder="e.g. CFX-2024-001">
+          <span class="input-hint">Enter the unique incident identifier</span>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Company / Client</label>
+          <input class="input" type="text" value="Acme Corp" readonly style="background:var(--bg-subtle);cursor:default;">
+          <span class="input-hint">Read-only field</span>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Hearing Date <span class="req">*</span></label>
+          <input class="input input-error" type="text" value="32/14/2024">
+          <span class="input-error-msg">Please enter a valid date (DD/MM/YYYY)</span>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Status</label>
+          <select class="select">
+            <option>Open</option>
+            <option>In Progress</option>
+            <option>Resolved</option>
+            <option>Archived</option>
+          </select>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Search Incidents</label>
+          <div class="input-group">
+            <span class="input-affix"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+            <input class="input" type="text" placeholder="Search by company, incident ID…">
+          </div>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Contract Value</label>
+          <div class="input-group">
+            <span class="input-affix">₹</span>
+            <input class="input" type="number" placeholder="0.00">
+            <span class="input-affix input-affix-right">INR</span>
+          </div>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Disabled Field</label>
+          <input class="input" type="text" placeholder="Cannot edit" disabled>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Incident Notes</label>
+          <textarea class="textarea" placeholder="Add notes, findings, or remediation steps…"></textarea>
+        </div>
+      </div>
+
+      <div class="ds-subsection-title">Checkboxes, Radios & Toggles</div>
+      <div class="grid-2" style="gap:20px;margin-top:4px;">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <label class="checkbox-wrap"><input type="checkbox" checked><span class="check-label">Billable engagement</span></label>
+          <label class="checkbox-wrap"><input type="checkbox"><span class="check-label">Critical severity</span></label>
+          <label class="checkbox-wrap"><input type="checkbox" disabled><span class="check-label" style="opacity:0.45;">Archived (disabled)</span></label>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <label class="radio-wrap"><input type="radio" name="r1" checked><span class="check-label">Vulnerability</span></label>
+          <label class="radio-wrap"><input type="radio" name="r1"><span class="check-label">Incident Response</span></label>
+          <label class="radio-wrap"><input type="radio" name="r1"><span class="check-label">Compliance Audit</span></label>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="toggle-wrap"><label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span></label><span class="check-label">Email notifications</span></div>
+          <div class="toggle-wrap"><label class="toggle"><input type="checkbox"><span class="toggle-track"></span></label><span class="check-label">SMS alerts</span></div>
+          <div class="toggle-wrap"><label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span></label><span class="check-label">Auto-save reports</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TABS ==================== -->
+    <section class="ds-section" id="tabs">
+      <div class="ds-section-eyebrow">02 — Components</div>
+      <h2 class="ds-section-title">Tabs</h2>
+
+      <div class="ds-subsection-title">Underline Tabs</div>
+      <div style="margin-top:4px;">
+        <div class="tab-list">
+          <button class="tab-item active" onclick="switchTab(this,'tA','Overview')">Overview</button>
+          <button class="tab-item" onclick="switchTab(this,'tA','Details')">Details</button>
+          <button class="tab-item" onclick="switchTab(this,'tA','Timeline')">Timeline</button>
+          <button class="tab-item" onclick="switchTab(this,'tA','Reports')">Reports</button>
+          <button class="tab-item" style="opacity:0.35;cursor:not-allowed;" disabled>Archived</button>
+        </div>
+        <div class="tab-panel active" id="tA-Overview">Incident overview, severity score, assigned analysts, and current status.</div>
+        <div class="tab-panel" id="tA-Details">Threat details, CVEs, and evidence logs associated with this incident.</div>
+        <div class="tab-panel" id="tA-Timeline">Chronological record of all incident events and response milestones.</div>
+        <div class="tab-panel" id="tA-Reports">Remediation reports, SLA compliance, and follow-up actions.</div>
+      </div>
+
+      <div class="ds-subsection-title">Pill Tabs</div>
+      <div style="margin-top:4px;">
+        <div class="tab-list-pill">
+          <button class="tab-item-pill active" onclick="switchPillTab(this)">All</button>
+          <button class="tab-item-pill" onclick="switchPillTab(this)">Open</button>
+          <button class="tab-item-pill" onclick="switchPillTab(this)">Resolved</button>
+          <button class="tab-item-pill" onclick="switchPillTab(this)">Archived</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ALERTS ==================== -->
+    <section class="ds-section" id="alerts">
+      <div class="ds-section-eyebrow">03 — Feedback</div>
+      <h2 class="ds-section-title">Alerts</h2>
+      <p class="ds-section-desc">Inline alerts communicate system status. The left border and icon communicate type at a glance, before the user reads the text.</p>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+        <div class="alert alert-info">
+          <span class="alert-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+          <div class="alert-content">
+            <div class="alert-title">Incident updated</div>
+            <div class="alert-body alert-body-text">Incident CFX-2024-088 has been updated with new threat intelligence. Review before the client briefing.</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').style.display='none'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="alert alert-success">
+          <span class="alert-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <div class="alert-content">
+            <div class="alert-title">Report submitted</div>
+            <div class="alert-body alert-body-text">Your incident report has been accepted. Reference: CFX/SEC/2024/5521.</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').style.display='none'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="alert alert-warning">
+          <span class="alert-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+          <div class="alert-content">
+            <div class="alert-title">Vulnerability deadline in 48 hours</div>
+            <div class="alert-body alert-body-text">The patch window for CVE-2024-1234 closes in 48 hours. Ensure remediation is complete.</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').style.display='none'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="alert alert-error">
+          <span class="alert-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>
+          <div class="alert-content">
+            <div class="alert-title">SLA breached</div>
+            <div class="alert-body alert-body-text">The response SLA for CFX-2024-102 has been breached. Immediate escalation required.</div>
+          </div>
+          <button class="alert-close" onclick="this.closest('.alert').style.display='none'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROGRESS ==================== -->
+    <section class="ds-section" id="progress">
+      <div class="ds-section-eyebrow">03 — Feedback</div>
+      <h2 class="ds-section-title">Progress & Loading</h2>
+
+      <div class="ds-subsection-title">Progress Bars</div>
+      <p style="font-size:13px;color:var(--text-tertiary);margin-bottom:16px;">Single thickness (6px). Shown in all brand and semantic colours.</p>
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="progress-wrap">
+          <div class="progress-header"><span class="progress-label">Threat Coverage</span><span class="progress-val">78%</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:78%;"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-header"><span class="progress-label">Contract Utilisation (Orange)</span><span class="progress-val">52%</span></div>
+          <div class="progress-track"><div class="progress-fill fill-gold" style="width:52%;"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-header"><span class="progress-label">Patch Compliance (Success)</span><span class="progress-val">95%</span></div>
+          <div class="progress-track"><div class="progress-fill fill-success" style="width:95%;"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-header"><span class="progress-label">Pending Vulnerabilities (Warning)</span><span class="progress-val">41%</span></div>
+          <div class="progress-track"><div class="progress-fill fill-warning" style="width:41%;"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-header"><span class="progress-label">Critical Incidents (Error)</span><span class="progress-val">23%</span></div>
+          <div class="progress-track"><div class="progress-fill fill-error" style="width:23%;"></div></div>
+        </div>
+      </div>
+
+      <div class="ds-subsection-title">Spinners</div>
+      <div class="flex gap-16 items-center" style="margin-top:4px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+          <div class="spinner spinner-sm"></div>
+          <span style="font-size:10px;color:var(--text-disabled);">sm · 16px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+          <div class="spinner spinner-md"></div>
+          <span style="font-size:10px;color:var(--text-disabled);">md · 24px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+          <div class="spinner spinner-lg"></div>
+          <span style="font-size:10px;color:var(--text-disabled);">lg · 36px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+          <div class="spinner spinner-xl"></div>
+          <span style="font-size:10px;color:var(--text-disabled);">xl · 48px</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TOOLTIPS ==================== -->
+    <section class="ds-section" id="tooltips">
+      <div class="ds-section-eyebrow">03 — Feedback</div>
+      <h2 class="ds-section-title">Tooltips</h2>
+      <p class="ds-section-desc">Hover any element below to reveal the tooltip. Used for icon buttons, truncated text, and status pills.</p>
+
+      <div class="flex gap-16 flex-wrap" style="margin-top:4px;">
+        <div class="tooltip-wrap">
+          <button class="btn btn-md btn-secondary">Hover me</button>
+          <div class="tooltip-box">Opens the incident detail view</div>
+        </div>
+        <div class="tooltip-wrap">
+          <button class="btn-icon-demo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+          <div class="tooltip-box">Export as PDF</div>
+        </div>
+        <div class="tooltip-wrap">
+          <button class="btn-icon-demo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+          <div class="tooltip-box">Incident settings</div>
+        </div>
+        <div class="tooltip-wrap">
+          <span class="pill pill-warning"><span class="pill-dot"></span>Pending</span>
+          <div class="tooltip-box">Awaiting analyst response</div>
+        </div>
+        <div class="tooltip-wrap">
+          <span class="pill pill-error"><span class="pill-dot"></span>Overdue</span>
+          <div class="tooltip-box">SLA exceeded — escalation required</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->    <!-- FOOTER -->
+    <div style="border-top:1px solid var(--border-default);padding-top:28px;margin-top:40px;display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:13px;color:var(--text-tertiary);">CyberFyx Design System · v1.0</div>
+      <div style="font-size:12px;color:var(--text-disabled);">Apr 2026</div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  function setMode(mode, btn) {
+    document.documentElement.setAttribute('data-theme', mode);
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function goTo(id, el) {
+    event.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function switchTab(btn, group, name) {
+    const list = btn.closest('.tab-list');
+    list.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    const wrap = btn.closest('div');
+    // find panels in parent section
+    document.querySelectorAll('[id^="' + group + '-"]').forEach(p => p.classList.remove('active'));
+    const panel = document.getElementById(group + '-' + name);
+    if (panel) panel.classList.add('active');
+  }
+
+  function switchPillTab(btn) {
+    btn.closest('.tab-list-pill').querySelectorAll('.tab-item-pill').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+
+  // Highlight sidebar link on scroll
+  const sections = document.querySelectorAll('.ds-section');
+  const links = document.querySelectorAll('.sidebar-link');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    links.forEach(l => {
+      l.classList.remove('active');
+      if (l.getAttribute('onclick') && l.getAttribute('onclick').includes("'" + current + "'")) {
+        l.classList.add('active');
+      }
+    });
+  });
+</script>
+</body>
+</html>

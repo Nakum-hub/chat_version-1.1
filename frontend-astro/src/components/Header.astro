@@ -1,0 +1,23 @@
+---
+import BrandLogo from './BrandLogo.astro';
+import PrimaryNav from './header/PrimaryNav.astro';
+import SiteSearch from './header/SiteSearch.astro';
+
+const pathname = Astro.url.pathname;
+const currentPath = pathname.replace(/^\/|\/$/g, '');
+---
+
+<header id="header" class="site-header">
+  <div class="container nav-container">
+      <BrandLogo imageHeight={40} />
+      <PrimaryNav currentPath={currentPath} />
+
+      <div class="nav-actions">
+          <SiteSearch />
+          <a href="/contact" class="btn btn-quote">Get Quote</a>
+          <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle menu">
+              <i class="fa-solid fa-bars"></i>
+          </button>
+      </div>
+  </div>
+</header>
